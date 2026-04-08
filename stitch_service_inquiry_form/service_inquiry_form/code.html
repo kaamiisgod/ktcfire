@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Service Inquiry | Krishnatech Engineering</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "error": "#ba1a1a",
+                        "secondary-container": "#a0a3fe",
+                        "surface": "#f8fafa",
+                        "on-tertiary-fixed-variant": "#004f51",
+                        "on-secondary-fixed": "#0a0565",
+                        "primary": "#006565",
+                        "secondary": "#5355aa",
+                        "outline-variant": "#bdc9c8",
+                        "on-tertiary-container": "#e4ffff",
+                        "outline": "#6e7979",
+                        "tertiary-fixed-dim": "#2ddbde",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "surface-variant": "#e1e3e3",
+                        "surface-dim": "#d8dada",
+                        "on-primary-container": "#e3fffe",
+                        "surface-bright": "#f8fafa",
+                        "secondary-fixed-dim": "#c0c1ff",
+                        "on-surface-variant": "#3e4949",
+                        "secondary-fixed": "#e1e0ff",
+                        "on-background": "#191c1d",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-tint": "#006a6a",
+                        "inverse-on-surface": "#eff1f1",
+                        "primary-fixed": "#93f2f2",
+                        "primary-fixed-dim": "#76d6d5",
+                        "tertiary-container": "#008082",
+                        "background": "#f8fafa",
+                        "inverse-primary": "#76d6d5",
+                        "surface-container-low": "#f2f4f4",
+                        "on-primary-fixed": "#002020",
+                        "tertiary": "#006567",
+                        "inverse-surface": "#2e3131",
+                        "on-secondary-fixed-variant": "#3b3d90",
+                        "primary-container": "#008080",
+                        "surface-container": "#eceeee",
+                        "on-primary-fixed-variant": "#004f4f",
+                        "on-tertiary-fixed": "#002020",
+                        "surface-container-highest": "#e1e3e3",
+                        "tertiary-fixed": "#5af8fb",
+                        "surface-container-high": "#e6e8e8",
+                        "error-container": "#ffdad6",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-container": "#333588"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active { color: #006565; }
+        .step-inactive { color: #6e7979; }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-slate-900/80 backdrop-blur-md shadow-[0px_12px_32px_rgba(0,40,40,0.08)]">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-2xl font-bold tracking-tighter text-teal-800 dark:text-teal-300">Krishnatech</div>
+<nav class="hidden md:flex gap-8 font-manrope font-bold tracking-tight text-sm">
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-600 transition-colors duration-200" href="#">Home</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-600 transition-colors duration-200" href="#">Services</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-600 transition-colors duration-200" href="#">Portfolio</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-teal-600 transition-colors duration-200" href="#">Contact</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-lg font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all">Get an Inquiry</button>
+</div>
+</header>
+<main class="pt-32 pb-24 px-4 sm:px-8 max-w-4xl mx-auto">
+<!-- Progress Stepper Component -->
+<div class="mb-16">
+<div class="flex items-center justify-between relative">
+<!-- Connecting Line -->
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-container-highest -z-10 transform -translate-y-1/2"></div>
+<div class="absolute top-1/2 left-0 w-1/3 h-0.5 bg-tertiary-container -z-10 transform -translate-y-1/2"></div>
+<!-- Step 1 (Active) -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-container text-on-tertiary-container flex items-center justify-center font-bold shadow-sm">
+                        1
+                    </div>
+<span class="font-label text-xs font-semibold uppercase tracking-widest text-primary">Company</span>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center font-bold">
+                        2
+                    </div>
+<span class="font-label text-xs font-semibold uppercase tracking-widest text-outline">Project</span>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center font-bold">
+                        3
+                    </div>
+<span class="font-label text-xs font-semibold uppercase tracking-widest text-outline">Specs</span>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest text-outline flex items-center justify-center font-bold">
+                        4
+                    </div>
+<span class="font-label text-xs font-semibold uppercase tracking-widest text-outline">Budget</span>
+</div>
+</div>
+</div>
+<!-- Multi-step Form Canvas -->
+<section class="bg-surface-container-low p-8 md:p-12 rounded-xl shadow-[0px_12px_32px_rgba(0,40,40,0.08)]">
+<div class="mb-10">
+<h1 class="font-headline text-3xl font-extrabold text-primary mb-2">Technical Inquiry</h1>
+<p class="text-on-surface-variant font-body">Step 1 of 4: Company Details &amp; Contact Information</p>
+</div>
+<!-- Form Steps Container -->
+<form action="#" class="space-y-8" method="POST">
+<!-- Step 1: Company Details (Visible by Default) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="space-y-2">
+<label class="font-label text-xs font-bold text-outline uppercase tracking-wider">Company Name</label>
+<input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body" placeholder="Engineering Firm LLC" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs font-bold text-outline uppercase tracking-wider">Contact Person</label>
+<input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body" placeholder="Alex Rivera" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs font-bold text-outline uppercase tracking-wider">Phone Number</label>
+<input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body" placeholder="+1 (555) 000-0000" type="tel"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs font-bold text-outline uppercase tracking-wider">Email Address</label>
+<input class="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body" placeholder="alex@company.com" type="email"/>
+</div>
+</div>
+<!-- Hidden Step Content Examples (Logic usually handled by JS, but styled here) -->
+<div class="hidden">
+<!-- Project Type Dropdown placeholder -->
+<div class="space-y-4">
+<label class="font-label text-xs font-bold text-outline uppercase tracking-wider">Project Type</label>
+<select class="w-full bg-surface-container-high border-none p-4 rounded-lg focus:ring-primary text-on-surface">
+<option>Sprinkler System</option>
+<option>Hydrant System</option>
+<option>Foam System</option>
+<option>Fire Alarm</option>
+<option>Gas Suppression</option>
+<option>Hydraulic Analysis</option>
+</select>
+</div>
+<!-- File Upload placeholder -->
+<div class="mt-8 p-12 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center text-center bg-surface-container-lowest/50">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-icon="upload_file">upload_file</span>
+<p class="font-headline font-bold text-lg mb-1">Upload Technical Drawings</p>
+<p class="text-sm text-outline mb-6">PDF, DWG, or BIM files supported. Max 50MB.</p>
+<button class="bg-surface-variant text-on-surface-variant px-6 py-2 rounded-lg font-bold text-sm" type="button">Select Files</button>
+</div>
+</div>
+<!-- Navigation Controls -->
+<div class="pt-12 flex justify-between items-center border-t border-outline-variant/20">
+<button class="text-primary font-bold flex items-center gap-2 hover:translate-x-[-4px] transition-transform" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+                        Back
+                    </button>
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-10 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all" type="button">
+                        Next Phase
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+</section>
+<!-- Technical Context Grid -->
+<div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface-container p-6 rounded-lg">
+<div class="text-primary-container mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<h3 class="font-headline font-bold text-on-surface mb-2">Safety Standard Compliance</h3>
+<p class="text-sm text-on-surface-variant">All designs are reviewed against NFPA and local building codes by certified engineers.</p>
+</div>
+<div class="bg-surface-container p-6 rounded-lg">
+<div class="text-primary-container mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="precision_manufacturing" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<h3 class="font-headline font-bold text-on-surface mb-2">High-Precision Modeling</h3>
+<p class="text-sm text-on-surface-variant">Utilizing BIM and hydraulic analysis tools for maximum system efficiency and reliability.</p>
+</div>
+<div class="bg-surface-container p-6 rounded-lg">
+<div class="text-primary-container mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="support_agent" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+</div>
+<h3 class="font-headline font-bold text-on-surface mb-2">Consultancy Access</h3>
+<p class="text-sm text-on-surface-variant">Inquiry submissions are prioritized for 24-hour initial engineering feedback cycles.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-900 dark:bg-black w-full pt-16 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 px-8 max-w-7xl mx-auto">
+<div class="col-span-1 md:col-span-2">
+<div class="text-lg font-bold text-white mb-6">Krishnatech Engineering</div>
+<p class="text-slate-400 font-inter text-xs max-w-sm mb-8">
+                    Global leaders in fire protection engineering, specialized in complex industrial systems and hydraulic analysis. Engineered for safety, built for life.
+                </p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-slate-500 hover:text-teal-400 cursor-pointer" data-icon="public">public</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-teal-400 cursor-pointer" data-icon="corporate_fare">corporate_fare</span>
+<span class="material-symbols-outlined text-slate-500 hover:text-teal-400 cursor-pointer" data-icon="shield_with_heart">shield_with_heart</span>
+</div>
+</div>
+<div>
+<h4 class="text-teal-500 font-bold mb-4 uppercase text-[10px] tracking-widest">Resources</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="text-slate-500 hover:text-teal-400 transition-colors text-xs font-inter" href="#">Engineering Blog</a></li>
+<li><a class="text-slate-500 hover:text-teal-400 transition-colors text-xs font-inter" href="#">Safety Standards</a></li>
+<li><a class="text-slate-500 hover:text-teal-400 transition-colors text-xs font-inter" href="#">Project Portfolio</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-teal-500 font-bold mb-4 uppercase text-[10px] tracking-widest">Legal</h4>
+<ul class="flex flex-col gap-3">
+<li><a class="text-slate-500 hover:text-teal-400 transition-colors text-xs font-inter" href="#">Privacy Policy</a></li>
+<li><a class="text-slate-500 hover:text-teal-400 transition-colors text-xs font-inter" href="#">Terms of Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 mt-16 pt-8 border-t border-slate-800 flex justify-between items-center">
+<p class="font-inter text-xs text-slate-400">© 2024 Krishnatech Engineering. Precision Safety Systems.</p>
+<div class="flex gap-6">
+<span class="material-symbols-outlined text-slate-700" data-icon="verified">verified</span>
+<span class="material-symbols-outlined text-slate-700" data-icon="gpp_maybe">gpp_maybe</span>
+</div>
+</div>
+</footer>
+</body></html>
