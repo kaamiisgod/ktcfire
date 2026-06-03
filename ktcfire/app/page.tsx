@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
 
 /* ===============================================================
    KRISHNATECH — HOME / LANDING PAGE
@@ -163,6 +164,45 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════════════ ESO CONCEPT SECTION ═══════════════ */}
+      <section className="py-16 bg-surface-container-highest">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-primary tracking-tight mb-4">
+                The ESO Advantage
+              </h2>
+              <p className="text-xl font-headline font-bold text-secondary mb-6">
+                Engineering Services Outsourcing
+              </p>
+              <p className="text-on-surface-variant leading-relaxed mb-6">
+                Many consultants and contractors lack in-house designing resources. Hiring full-time engineers is expensive and time-consuming. We bridge this gap by offering on-demand, outsourced fire system design consulting.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3 text-sm text-on-surface">
+                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
+                  Complete Fire Protection Designing delivered remotely.
+                </li>
+                <li className="flex items-start gap-3 text-sm text-on-surface">
+                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
+                  Expert in National and International Fire Safety Codes (NBC, IS, NFPA, OISD & FM).
+                </li>
+                <li className="flex items-start gap-3 text-sm text-on-surface">
+                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
+                  White-label service: You retain complete client-facing control.
+                </li>
+              </ul>
+            </div>
+            <div className="bg-surface-container-low p-8 rounded-xl ghost-border shadow-ambient border-t-4 border-t-secondary">
+              <h3 className="font-headline font-bold text-xl mb-4 text-on-surface">Why Outsource to Us?</h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                Detailing to the level of contracting at the consulting phase to minimize costs and maximize profits. Enjoy scalable, cost-effective engineering with fast turnarounds and strict confidentiality.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════ SERVICES SECTION ═══════════════ */}
       <section id="services" className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
         {/* Header */}
@@ -313,20 +353,63 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ═══════════════ TECHNICAL SHOWCASE SECTION ═══════════════ */}
+      <section className="py-20 md:py-28 bg-surface-container-highest">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-4">
+              System Detailed Drawings & Analysis
+            </h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto">
+              Precision engineering backed by advanced hydraulic modeling and state-of-the-art CAD drafting techniques.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-ambient group">
+              <div className="aspect-[4/3] relative overflow-hidden bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/tech-drawing.png" alt="Technical CAD Drawing" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              </div>
+              <div className="p-8">
+                <h3 className="font-headline font-bold text-xl text-primary mb-2">High-Precision CAD Drafting</h3>
+                <p className="text-sm text-on-surface-variant">Detailed blueprints for fire sprinkler and hydrant systems, ready for construction and execution.</p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-ambient group">
+              <div className="aspect-[4/3] relative overflow-hidden bg-black">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/hydraulic-analysis.png" alt="Hydraulic Flow Analysis" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
+              </div>
+              <div className="p-8">
+                <h3 className="font-headline font-bold text-secondary mb-2">Hydraulic Analysis</h3>
+                <p className="text-sm text-on-surface-variant">Advanced 3D modeling and pressure gradient analysis for optimal water flow and system reliability.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════ TRUSTED BY SECTION ═══════════════ */}
       <section className="py-16 bg-surface-container-low">
         <div className="px-6 md:px-8 max-w-7xl mx-auto text-center">
           <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant mb-10">
             Trusted by Industry Leaders
           </p>
-          <div className="flex flex-wrap justify-center gap-12 md:gap-16">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center">
             {trustedClients.map((client) => (
-              <span
+              <div
                 key={client}
-                className="text-sm font-headline font-bold text-outline tracking-wide"
+                className="flex flex-col items-center justify-center p-4 bg-surface-container-highest rounded-lg w-32 h-24 hover:shadow-sm transition-all"
               >
-                {client}
-              </span>
+                <span className="material-symbols-outlined text-outline-variant text-3xl mb-2">
+                  domain
+                </span>
+                <span className="text-xs font-headline font-bold text-on-surface text-center leading-tight">
+                  {client}
+                </span>
+              </div>
             ))}
           </div>
         </div>
@@ -354,56 +437,42 @@ export default function HomePage() {
                 <span className="material-symbols-outlined text-lg">call</span>
                 <span>+91 9769367666</span>
               </div>
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-lg">
-                  location_on
-                </span>
-                <span>Mumbai & Ghaziabad, India</span>
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-lg mt-1">location_city</span>
+                <div>
+                  <div className="font-bold mb-1">Registered Office</div>
+                  <div className="text-white/80 leading-relaxed text-xs">
+                    Krishnatech Consulting Engineer Services,<br />
+                    Ghaziabad, UP
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-lg mt-1">business</span>
+                <div>
+                  <div className="font-bold mb-1">Current Office</div>
+                  <div className="text-white/80 leading-relaxed text-xs">
+                    Main Engineering Hub,<br />
+                    NCR Region, India
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="material-symbols-outlined text-lg mt-1">corporate_fare</span>
+                <div>
+                  <div className="font-bold mb-1">Mumbai Office</div>
+                  <div className="text-white/80 leading-relaxed text-xs">
+                    B/17, Janardan Apartments,<br />
+                    Natwarya Shankar Ghankar Marg,<br />
+                    Dadar(W), Mumbai-400028
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right – Form */}
-          <div className="bg-surface-container-low p-10 md:p-14">
-            <form className="space-y-6">
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="John Doe"
-                  className="w-full bg-surface-container-high border-none p-4 rounded-t-lg font-body focus:ring-0 focus:border-b-2 focus:border-primary transition-all"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Corporate Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="info@company.com"
-                  className="w-full bg-surface-container-high border-none p-4 rounded-t-lg font-body focus:ring-0 focus:border-b-2 focus:border-primary transition-all"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Project Brief
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Describe your safety engineering needs..."
-                  className="w-full bg-surface-container-high border-none p-4 rounded-t-lg font-body focus:ring-0 focus:border-b-2 focus:border-primary transition-all resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full gradient-primary text-white py-4 rounded-xl font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all shadow-lg"
-              >
-                Send Message
-              </button>
-            </form>
-          </div>
+          <ContactForm />
         </div>
       </section>
     </>

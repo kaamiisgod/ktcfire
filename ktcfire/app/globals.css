@@ -3,34 +3,34 @@
 /* ===== KRISHNATECH DESIGN TOKENS (Ignis Precision) ===== */
 @theme inline {
   /* --- Primary Palette --- */
-  --color-primary: #006565;
-  --color-primary-container: #008080;
-  --color-primary-fixed: #93f2f2;
-  --color-primary-fixed-dim: #76d6d5;
+  --color-primary: #1D2468;
+  --color-primary-container: #2A3699;
+  --color-primary-fixed: #8C9EFF;
+  --color-primary-fixed-dim: #536DFE;
   --color-on-primary: #ffffff;
-  --color-on-primary-container: #e3fffe;
-  --color-on-primary-fixed: #002020;
-  --color-on-primary-fixed-variant: #004f4f;
+  --color-on-primary-container: #E8EAF6;
+  --color-on-primary-fixed: #000000;
+  --color-on-primary-fixed-variant: #1A237E;
 
   /* --- Secondary Palette --- */
-  --color-secondary: #5355aa;
-  --color-secondary-container: #a0a3fe;
-  --color-secondary-fixed: #e1e0ff;
-  --color-secondary-fixed-dim: #c0c1ff;
+  --color-secondary: #F36F21;
+  --color-secondary-container: #FF8A50;
+  --color-secondary-fixed: #FFCC80;
+  --color-secondary-fixed-dim: #FFB74D;
   --color-on-secondary: #ffffff;
-  --color-on-secondary-container: #333588;
-  --color-on-secondary-fixed: #0a0565;
-  --color-on-secondary-fixed-variant: #3b3d90;
+  --color-on-secondary-container: #FFF3E0;
+  --color-on-secondary-fixed: #E65100;
+  --color-on-secondary-fixed-variant: #BF360C;
 
   /* --- Tertiary Palette --- */
-  --color-tertiary: #006567;
-  --color-tertiary-container: #008082;
-  --color-tertiary-fixed: #5af8fb;
-  --color-tertiary-fixed-dim: #2ddbde;
+  --color-tertiary: #0099D8;
+  --color-tertiary-container: #29B6F6;
+  --color-tertiary-fixed: #B3E5FC;
+  --color-tertiary-fixed-dim: #81D4FA;
   --color-on-tertiary: #ffffff;
-  --color-on-tertiary-container: #e4ffff;
-  --color-on-tertiary-fixed: #002020;
-  --color-on-tertiary-fixed-variant: #004f51;
+  --color-on-tertiary-container: #E1F5FE;
+  --color-on-tertiary-fixed: #01579B;
+  --color-on-tertiary-fixed-variant: #0277BD;
 
   /* --- Surface & Background --- */
   --color-surface: #f8fafa;
@@ -112,12 +112,12 @@ body {
 
 /* Signature Gradient (primary → primary-container, 135°) */
 .gradient-primary {
-  background: linear-gradient(135deg, #006565, #008080);
+  background: linear-gradient(135deg, #1D2468, #2A3699);
 }
 
 /* Gradient text utility */
 .text-gradient-primary {
-  background: linear-gradient(135deg, #006565, #008080);
+  background: linear-gradient(135deg, #1D2468, #2A3699);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

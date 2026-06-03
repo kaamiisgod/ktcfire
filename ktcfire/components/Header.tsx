@@ -6,6 +6,8 @@ import { useState } from "react";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/about", label: "About" },
+  { href: "/team", label: "Team" },
   { href: "/#services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/#contact", label: "Contact" },
@@ -21,18 +23,24 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="text-2xl font-bold tracking-tighter text-primary font-headline"
+          className="flex flex-col"
         >
-          Krishnatech
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Krishnatech Logo" className="h-12 w-auto object-contain" />
+          <span className="text-[10px] uppercase font-bold text-secondary mt-1 tracking-wider text-center">
+            An ESO Company
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => {
-            const isActive =
-              link.href === "/"
+            const isHashLink = link.href.includes("#");
+            const isActive = isHashLink
+              ? false // Hash links don't get active styling from pathname
+              : link.href === "/"
                 ? pathname === "/"
-                : pathname.startsWith(link.href.replace("/#", "/"));
+                : pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}

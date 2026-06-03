@@ -21,53 +21,159 @@ const categories = [
 
 const projects = [
   {
-    category: "Data Centre",
-    client: "Nxtra Data Centre",
-    title: "Project Nexus Fire Infrastructure",
-    scope: "Sprinkler System Design & Gas Suppression",
-    icon: "engineering",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDmIAETreoEQWTrn3xcTrPc1RkQycJXzRWTZzroGfxfcY2KqZH0R5K0WeSXjGV7WtACfR64m5nNzX8mIJDd7HI_k0UChm69xMz7j5N3t3s4bW-eT3n2wBQbAk-MoVK4r6ORyECBX8oB4_UEG-e4m1g00O1Kx0x_tbddjCP19bEHl0j6PCZbZGpRuklSDGykG9jTSYtz2NXc5xHnpGxXURO1m0MFT17C4G_hTo3c_hFfQK5IRZ2DTuc-Nv9_wGLxYRjyvTU96XFbR7PV",
-  },
-  {
     category: "Pharma",
     client: "Mankind Pharma",
-    title: "Advanced Pharma Plant Fire Protection",
-    scope: "Complete Fire Detection, Protection & Suppression",
-    icon: "fire_extinguisher",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCj1kXk_rWg47_gsDUUbR5eExVm7MFexEPgvWpzBd6ZGTbbzAhZmK_kc2nVxwKb-TocKmH84ruU8FvfCHbJ8gOxe7cyIVJ5XDyW3TjchEVxxYpjOlQpDA-xpLaJ2GZsK6qk3vFGbr4VrBLar9ZDmf1JUrtIwXaOxdyq5RFAapqppXktsgwCFHrT3BnC9zcycRmlluUzm5Agn4neNUgZU7sIRz8ajDQTwQmH1rEJxRGfu2PhX4Qv2o0Kt2DLGCX2M3BsajDOZ8H7tbes",
+    title: "Complete Pharma Plant Fire Protection",
+    scope: "Validation and Modification of tender designing",
+    icon: "science"
+  },
+  {
+    category: "Automobile",
+    client: "Mahindra Tractors",
+    title: "Furnace & Robotic Arm Unit",
+    scope: "Extension and strengthening of Fire Fighting system",
+    icon: "directions_car"
   },
   {
     category: "Metro & Rail",
     client: "Bhopal Metro Depot",
     title: "Metro Rail Depot Fire Safety System",
-    scope: "Hydrant System Engineering & Tunnel Ventilation",
-    icon: "design_services",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuDJz1EfXKkRz8bL2TF6GYNaifBmmwmK9Y1ZHJ8b62lRXuWqnQE58nxMXpvrZBWtUPMPpwpujrvdkmgEFrRvLtbd2qmG_plaGjNNMzaGANdYDzM0CH82igSbyG9RgshIV4mDLySq4U3bWyu3KrvYZI3TJFgFvS2LUTjDxMU9xNlXuTlHTnLUsjqKIMVambd60Hnz5dcv1G1YnvwvIwRqT-2Sm-qG1_qCS67g7iMgqDfIB3Hnd4czOqWgoK85fYxLsJeyLQ9VNjJfBWbh",
+    scope: "Validation and Modification of tender design",
+    icon: "train"
   },
   {
-    category: "Automobile",
-    client: "Maruti Suzuki India Ltd",
-    title: "Paint Shop Fire Suppression Upgrade",
-    scope: "Deluge Valve Systems & Foam Suppression",
-    icon: "verified_user",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuC6Gp2fYaIOoQj8U1gkwSfNbeicSBuCtIpPzTR-tiqt0iWyeZWkGUqnLOUsGhwer3XmydkHOtIec3pIXZajNFkX2BKuFqHmauZw3V7vyWhzVj6OcTss8ZnB6KJfxHElFcL0PjLs933xSO2bZKBeRBQVB9Qbuzen8E-2cgNMYPeG4PBCapl5HsngeMTkXgtTExWwM00iaGCKTZiADtnFGPWfe-4x_sfx1YIS6aTrNhr5PBNWRUVbQOAtZU1T59NUEde7VP61ULgLwUh7",
+    category: "Distillery",
+    client: "Lords Distillery",
+    title: "Distillery Fire Protection System",
+    scope: "Consultancy and Designing of Fire protection system",
+    icon: "liquor"
   },
   {
     category: "Petrochemical",
-    client: "IOCL Ltd",
-    title: "Transformer Protection – HVW Spray System",
-    scope: "Intrinsically Safe Detection & Remote Monitoring",
-    icon: "precision_manufacturing",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuA5nwnokJsK9zZ8GImjkqDW7M1zhulZ_RoRE1kNOibkQPvyuQXQEBBBm5UuVwVI0WnRBoQCN54MTDFMYi1mH1h8H8iGJXj_Y8kmAKySAyXdtBEmpePDwNujoDw_LyNUPPTOL1RlMzMrtNRdVTshpLu-27zyXFCTKFNFWKipPSBEsRn8ZpvwGCHykt9DbP3nZGifN222UfphpcI-YBzC4t9fYnjPZUslkoFFEhjxHOGsQrzBhOAJ7O52tmcKURMsAjq5ZcPDorJds1PG",
+    client: "Indorama",
+    title: "Pet Recycling Plant, Indonesia",
+    scope: "Consultancy and Designing of Fire protection system",
+    icon: "oil_barrel"
+  },
+  {
+    category: "Infrastructure",
+    client: "AAI Terminal Building",
+    title: "Airport Terminal Fire & Public Health",
+    scope: "Designing of Fire protection, Public health engineering",
+    icon: "flight_takeoff"
+  },
+  {
+    category: "Infrastructure",
+    client: "Boeing Aircraft Hangar",
+    title: "High Expansion Foam System",
+    scope: "Pre bid Designing of Fire protection system",
+    icon: "flight"
+  },
+  {
+    category: "Petrochemical",
+    client: "Oil Wells, Nigeria",
+    title: "Fixed foam & MVW spray system",
+    scope: "System for 100 mtr diameter Oil Wells",
+    icon: "water_drop"
+  },
+  {
+    category: "Petrochemical",
+    client: "Toyo Ink",
+    title: "Chemical Plant Protection",
+    scope: "Complete Fire protection system",
+    icon: "science"
+  },
+  {
+    category: "Distillery",
+    client: "Shree Renuka Sugars",
+    title: "Sugar based Distillery Project",
+    scope: "Pre bid Designing support and consultancy",
+    icon: "eco"
+  },
+  {
+    category: "Petrochemical",
+    client: "Barauni Refinery",
+    title: "Loading Unloading Gantries",
+    scope: "Pre bid Design Support",
+    icon: "local_shipping"
+  },
+  {
+    category: "Petrochemical",
+    client: "IOCL Ltd.",
+    title: "Transformer Protection",
+    scope: "High velocity Water spray system",
+    icon: "electric_bolt"
+  },
+  {
+    category: "Pharma",
+    client: "IPCA Laboratories",
+    title: "Foam Sprinkler System",
+    scope: "Designing and consultancy",
+    icon: "medical_services"
+  },
+  {
+    category: "Automobile",
+    client: "Maruti Suzuki India",
+    title: "Multiple Expansion Projects",
+    scope: "Complete designing and consultancy works",
+    icon: "directions_car"
+  },
+  {
+    category: "Data Centre",
+    client: "Nxtra Data Centre",
+    title: "Project Nexus Fire Infrastructure",
+    scope: "Shop Drawing preparation and cost optimization",
+    icon: "dns"
+  },
+  {
+    category: "Data Centre",
+    client: "Technoelectric Data Centre",
+    title: "Chennai Data Centre Facility",
+    scope: "Shop Drawing preparation and cost optimization",
+    icon: "dns"
+  },
+  {
+    category: "Petrochemical",
+    client: "ONGC - GDU Facility",
+    title: "Glycol Absorber MVW Spray",
+    scope: "MVW spray system and Validation of Hydrant system",
+    icon: "propane_tank"
   },
   {
     category: "Power",
-    client: "NTPC / Aravali Power",
-    title: "Waste-to-Energy & Substation Fire Protection",
-    scope: "Fire Sealing & Cable Coating Application",
-    icon: "construction",
-    image: "https://lh3.googleusercontent.com/aida-public/AB6AXuASDPIaxglB1ArC1jXOKowieLpaL6hI8HA4ZYAnZTpzIJMVY6JmHkWEEtrNwcOzYQhNzRLsaHu_b6KoT6j-7L6onw-KUJOTrVASQVuFUeR44CyQHtLSSET_5xIkYi5RQYfYJeoA_LGzU3GlM6MX_cvzIojv7L8_kMSDccEq1n3VY0ah81u2JIMMK0ULTb8Xqi-Pk8Vqw9uKtvMT5v_A5TXOP8ZtBI6uIdoiNMlECZQRpBwSCqnx1Sk6YPgtnGPei3M6M0AZmN3sAERH",
+    client: "NTPC",
+    title: "Waste to Energy Project",
+    scope: "Consulting and Designing works of Fire protection",
+    icon: "bolt"
   },
+  {
+    category: "Power",
+    client: "MSETCL 765 KV Substation",
+    title: "Transformer HVW Spray System",
+    scope: "Consulting for HVW spray system for Transformers/Reactors",
+    icon: "electric_bolt"
+  },
+  {
+    category: "Pharma",
+    client: "Mahamaya Pharma",
+    title: "Fire Detection & Alarm",
+    scope: "Pre Bid Designing support",
+    icon: "sensors"
+  },
+  {
+    category: "Distillery",
+    client: "Radico Khaitan",
+    title: "Maturation Hall Protection",
+    scope: "Medium Velocity water spray system designing",
+    icon: "liquor"
+  },
+  {
+    category: "Petrochemical",
+    client: "BPCL Bina Refinery",
+    title: "High Velocity Water Spray",
+    scope: "System Design & hydraulic Analysis for Transformers",
+    icon: "water_drop"
+  }
 ];
 
 export default function PortfolioPage() {
@@ -141,16 +247,13 @@ export default function PortfolioPage() {
             key={project.title}
             className="group flex flex-col bg-surface-container-low rounded-xl overflow-hidden hover:shadow-ambient transition-all duration-300"
           >
-            {/* Image */}
-            <div className="h-56 w-full relative overflow-hidden bg-surface-container-high">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={project.image}
-                alt={project.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
+            {/* Logo Placeholder */}
+            <div className="h-48 w-full relative overflow-hidden bg-surface-container-high flex flex-col items-center justify-center text-outline-variant group-hover:bg-primary-container group-hover:text-primary transition-colors duration-500">
+              <span className="material-symbols-outlined text-6xl opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
+                {project.icon}
+              </span>
               <div className="absolute top-4 left-4">
-                <span className="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest">
+                <span className="bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest shadow-sm">
                   {project.category}
                 </span>
               </div>
@@ -178,17 +281,11 @@ export default function PortfolioPage() {
         ))}
       </div>
 
-      {/* ═══════════════ PAGINATION ═══════════════ */}
-      <div className="mt-20 flex justify-center items-center gap-4">
-        <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed transition-colors">
-          <span className="material-symbols-outlined">chevron_left</span>
-        </button>
-        <span className="text-sm font-bold text-primary font-headline">
-          01 / 05
+      {/* ═══════════════ RESULTS COUNT ═══════════════ */}
+      <div className="mt-20 flex justify-center items-center">
+        <span className="text-sm font-bold text-on-surface-variant font-headline">
+          Showing {filteredProjects.length} of {projects.length} projects
         </span>
-        <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-surface-container-high text-on-surface-variant hover:bg-primary-fixed transition-colors">
-          <span className="material-symbols-outlined">chevron_right</span>
-        </button>
       </div>
     </div>
   );
