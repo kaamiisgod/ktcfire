@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/Icon";
 import { site } from "@/lib/content/site";
 
@@ -26,6 +26,18 @@ export default function ContactForm() {
   );
   const [startedAt] = useState(() => Date.now());
   const [honeypot, setHoneypot] = useState("");
+  // Message from the server, shown verbatim instead of a generic failure.
+  const [notice, setNotice] = useState<{ wait: boolean; message: string } | null>(
+    null,
+  );
+  const [retryIn, setRetryIn] = useState(0);
+
+  // Count the wait down so the button says when it can be pressed again.
+  useEffect(() => {
+    if (retryIn <= 0) return;
+    const timer = setTimeout(() => setRetryIn((n) => n - 1), 1_000);
+    return () => clearTimeout(timer);
+  }, [retryIn]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,6 +45,7 @@ export default function ContactForm() {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) return;
 
+    setNotice(null);
     setStatus("submitting");
     try {
       const res = await fetch("/api/contact", {
@@ -40,16 +53,24 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           form: "contact",
-          startedAt,
+          elapsedMs: Date.now() - startedAt,
           website: honeypot,
           fields: values,
         }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
           fieldErrors?: Errors;
+          retryAfterSeconds?: number;
         };
         if (data.fieldErrors) setErrors(data.fieldErrors);
+        if (data.error) {
+          setNotice({ wait: res.status === 429, message: data.error });
+        }
+        if (res.status === 429 && typeof data.retryAfterSeconds === "number") {
+          setRetryIn(data.retryAfterSeconds);
+        }
         setStatus("error");
         return;
       }
@@ -181,12 +202,21 @@ export default function ContactForm() {
 
         {status === "error" && (
           <div
-            className="bg-error-container text-on-error-container rounded-md p-4 text-sm leading-relaxed"
+            className={`rounded-md p-4 text-sm leading-relaxed ${
+              notice?.wait
+                ? "bg-tertiary-fixed text-on-tertiary-fixed"
+                : "bg-error-container text-on-error-container"
+            }`}
             role="alert"
           >
-            <p className="font-bold mb-1">The message could not be sent.</p>
+            <p className="font-bold mb-1">
+              {notice?.wait
+                ? "Not sent yet — your message is still here."
+                : "The message could not be sent."}
+            </p>
             <p>
-              Please try again, or call us directly on{" "}
+              {notice?.message ?? "Please try again."}{" "}
+              You can also call us directly on{" "}
               <a href={site.phoneHref} className="underline font-bold tnum">
                 {site.phone}
               </a>
@@ -197,10 +227,14 @@ export default function ContactForm() {
 
         <button
           type="submit"
-          disabled={status === "submitting"}
+          disabled={status === "submitting" || retryIn > 0}
           className="w-full gradient-primary text-on-primary py-4 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:active:scale-100"
         >
-          {status === "submitting" ? "Sending…" : "Send message"}
+          {retryIn > 0
+            ? `Send again in ${retryIn > 60 ? `${Math.ceil(retryIn / 60)} min` : `${retryIn}s`}`
+            : status === "submitting"
+              ? "Sending…"
+              : "Send message"}
         </button>
       </form>
     </div>

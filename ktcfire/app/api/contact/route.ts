@@ -16,15 +16,32 @@ const RATE_WINDOW_MS = 10 * 60 * 1_000;
 // brochure-site form.
 const hits = new Map<string, { count: number; windowStart: number }>();
 
-function rateLimited(ip: string): boolean {
+/** Returns how many seconds the caller must wait, or 0 if it may proceed. */
+function retryAfterSeconds(ip: string): number {
   const now = Date.now();
   const entry = hits.get(ip);
   if (!entry || now - entry.windowStart > RATE_WINDOW_MS) {
     hits.set(ip, { count: 1, windowStart: now });
-    return false;
+    return 0;
   }
   entry.count += 1;
-  return entry.count > RATE_LIMIT;
+  if (entry.count <= RATE_LIMIT) return 0;
+  return Math.max(1, Math.ceil((entry.windowStart + RATE_WINDOW_MS - now) / 1_000));
+}
+
+/** "3 minutes" / "45 seconds", for the wait message. */
+function humanWait(seconds: number): string {
+  if (seconds < 60) return `${seconds} second${seconds === 1 ? "" : "s"}`;
+  const minutes = Math.ceil(seconds / 60);
+  return `${minutes} minute${minutes === 1 ? "" : "s"}`;
+}
+
+/** 429 with the wait spelled out, so a person is never left guessing. */
+function waitResponse(seconds: number, lead: string) {
+  return Response.json(
+    { error: `${lead} Please wait ${humanWait(seconds)} and send it again.`, retryAfterSeconds: seconds },
+    { status: 429, headers: { "Retry-After": String(seconds) } },
+  );
 }
 
 type FormKind = "contact" | "inquiry";
@@ -67,15 +84,14 @@ function escapeHtml(s: string): string {
 export async function POST(request: Request) {
   const ip =
     request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (rateLimited(ip)) {
-    return Response.json(
-      { error: "Too many submissions. Please try again in a few minutes." },
-      { status: 429 },
-    );
+  const waitFor = retryAfterSeconds(ip);
+  if (waitFor > 0) {
+    return waitResponse(waitFor, "You have sent several submissions already.");
   }
 
   let body: {
     form?: string;
+    elapsedMs?: number;
     startedAt?: number;
     website?: string;
     fields?: Record<string, unknown>;
@@ -92,13 +108,28 @@ export async function POST(request: Request) {
     return Response.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  // Honeypot filled or form submitted implausibly fast: pretend success so
-  // bots learn nothing.
-  const tooFast =
-    typeof body.startedAt !== "number" ||
-    Date.now() - body.startedAt < MIN_FILL_MS;
-  if (body.website || tooFast) {
+  // Honeypot filled: a definite bot. Pretend success so it learns nothing.
+  if (body.website) {
     return Response.json({ ok: true });
+  }
+
+  // Fill time is measured on the client and sent as a duration, so a device
+  // clock that disagrees with the server's cannot make a real submission look
+  // instantaneous. `startedAt` is still read as a fallback so a page cached
+  // from before this deploy keeps working.
+  const elapsed =
+    typeof body.elapsedMs === "number"
+      ? body.elapsedMs
+      : typeof body.startedAt === "number"
+        ? Date.now() - body.startedAt
+        : Number.NaN;
+  // Too fast to be a person typing. Never drop it silently — say so and let
+  // them send again, so a real message is delayed rather than lost.
+  if (!(elapsed >= MIN_FILL_MS)) {
+    const wait = Number.isFinite(elapsed)
+      ? Math.max(1, Math.ceil((MIN_FILL_MS - elapsed) / 1_000))
+      : Math.ceil(MIN_FILL_MS / 1_000);
+    return waitResponse(wait, "That was submitted faster than we can accept.");
   }
 
   // Server-side validation mirroring the client.

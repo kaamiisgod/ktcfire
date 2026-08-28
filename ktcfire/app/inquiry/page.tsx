@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "@/components/Icon";
 import { site } from "@/lib/content/site";
 
@@ -98,6 +98,45 @@ type Errors = Partial<Record<keyof Fields, string>>;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/**
+ * Length caps and step placement, mirroring the server schema in
+ * app/api/contact/route.ts. Kept in sync so an over-long value is caught on
+ * the step where it was typed, not rejected after the final submit.
+ */
+const LENGTH_LIMITS: Partial<Record<keyof Fields, [string, number]>> = {
+  company: ["Company name", 200],
+  contactPerson: ["Contact person", 200],
+  phone: ["Phone number", 40],
+  email: ["Email address", 320],
+  location: ["Project location", 300],
+  area: ["Facility area", 40],
+  requirements: ["Additional requirements", 5_000],
+  notes: ["Additional notes", 5_000],
+};
+
+const FIELD_STEP: Record<string, number> = {
+  company: 1,
+  contactPerson: 1,
+  phone: 1,
+  email: 1,
+  projectType: 2,
+  location: 2,
+  area: 3,
+  hazard: 3,
+  codes: 3,
+  requirements: 3,
+  budget: 4,
+  timeline: 4,
+  scope: 4,
+  notes: 4,
+};
+
+/** Earliest step holding one of the given field keys. */
+function stepForErrors(errors: Record<string, unknown>): number {
+  const steps = Object.keys(errors).map((key) => FIELD_STEP[key] ?? 1);
+  return steps.length > 0 ? Math.min(...steps) : 1;
+}
+
 function validateStep(step: number, f: Fields): Errors {
   const errors: Errors = {};
   if (step === 1) {
@@ -113,6 +152,15 @@ function validateStep(step: number, f: Fields): Errors {
   if (step === 2) {
     if (!f.projectType) errors.projectType = "Select a project type.";
     if (!f.location.trim()) errors.location = "Enter the project location.";
+  }
+
+  for (const [key, limit] of Object.entries(LENGTH_LIMITS)) {
+    if (FIELD_STEP[key] !== step) continue;
+    const [label, max] = limit as [string, number];
+    const value = f[key as keyof Fields];
+    if (typeof value === "string" && value.trim().length > max) {
+      errors[key as keyof Fields] = `${label} must be under ${max} characters.`;
+    }
   }
   return errors;
 }
@@ -152,6 +200,18 @@ export default function InquiryPage() {
   );
   const [startedAt] = useState(() => Date.now());
   const [honeypot, setHoneypot] = useState("");
+  // Message from the server, shown verbatim instead of a generic failure.
+  const [notice, setNotice] = useState<{ wait: boolean; message: string } | null>(
+    null,
+  );
+  const [retryIn, setRetryIn] = useState(0);
+
+  // Count the wait down so the button says when it can be pressed again.
+  useEffect(() => {
+    if (retryIn <= 0) return;
+    const timer = setTimeout(() => setRetryIn((n) => n - 1), 1_000);
+    return () => clearTimeout(timer);
+  }, [retryIn]);
 
   const set = <K extends keyof Fields>(key: K, value: Fields[K]) =>
     setFields((f) => ({ ...f, [key]: value }));
@@ -177,12 +237,19 @@ export default function InquiryPage() {
   };
 
   const handleSubmit = async () => {
-    const allErrors = { ...validateStep(1, fields), ...validateStep(2, fields) };
+    const allErrors = {
+      ...validateStep(1, fields),
+      ...validateStep(2, fields),
+      ...validateStep(3, fields),
+      ...validateStep(4, fields),
+    };
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
-      setCurrentStep(allErrors.company || allErrors.contactPerson || allErrors.phone || allErrors.email ? 1 : 2);
+      setCurrentStep(stepForErrors(allErrors));
       return;
     }
+    setErrors({});
+    setNotice(null);
     setStatus("submitting");
     try {
       const res = await fetch("/api/contact", {
@@ -190,7 +257,7 @@ export default function InquiryPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           form: "inquiry",
-          startedAt,
+          elapsedMs: Date.now() - startedAt,
           website: honeypot,
           fields: {
             ...fields,
@@ -200,6 +267,26 @@ export default function InquiryPage() {
         }),
       });
       if (!res.ok) {
+        // The server validates independently; show which field it rejected
+        // rather than a generic "could not be sent".
+        const data = (await res.json().catch(() => null)) as {
+          error?: string;
+          fieldErrors?: Errors;
+          retryAfterSeconds?: number;
+        } | null;
+        const fieldErrors = data?.fieldErrors;
+        if (fieldErrors && Object.keys(fieldErrors).length > 0) {
+          setErrors(fieldErrors);
+          setCurrentStep(stepForErrors(fieldErrors));
+          setStatus("idle");
+          return;
+        }
+        if (data?.error) {
+          setNotice({ wait: res.status === 429, message: data.error });
+        }
+        if (res.status === 429 && typeof data?.retryAfterSeconds === "number") {
+          setRetryIn(data.retryAfterSeconds);
+        }
         setStatus("error");
         return;
       }
@@ -327,6 +414,7 @@ export default function InquiryPage() {
                   type="text"
                   autoComplete="organization"
                   required
+                  maxLength={200}
                   className="field"
                   value={fields.company}
                   onChange={(e) => set("company", e.target.value)}
@@ -340,6 +428,7 @@ export default function InquiryPage() {
                   type="text"
                   autoComplete="name"
                   required
+                  maxLength={200}
                   className="field"
                   value={fields.contactPerson}
                   onChange={(e) => set("contactPerson", e.target.value)}
@@ -355,6 +444,7 @@ export default function InquiryPage() {
                   type="tel"
                   autoComplete="tel"
                   required
+                  maxLength={40}
                   className="field tnum"
                   value={fields.phone}
                   onChange={(e) => set("phone", e.target.value)}
@@ -368,6 +458,7 @@ export default function InquiryPage() {
                   type="email"
                   autoComplete="email"
                   required
+                  maxLength={320}
                   className="field"
                   value={fields.email}
                   onChange={(e) => set("email", e.target.value)}
@@ -404,6 +495,7 @@ export default function InquiryPage() {
                   id="location"
                   type="text"
                   required
+                  maxLength={300}
                   className="field"
                   placeholder="City, State, Country"
                   value={fields.location}
@@ -432,10 +524,13 @@ export default function InquiryPage() {
                     id="area"
                     type="text"
                     inputMode="numeric"
+                    maxLength={100}
                     className="field tnum"
                     placeholder="e.g. 50,000"
                     value={fields.area}
                     onChange={(e) => set("area", e.target.value)}
+                    aria-invalid={errors.area ? true : undefined}
+                    aria-describedby={errors.area ? "area-error" : undefined}
                   />
                 </Field>
                 <Field id="hazard" label="Hazard classification — optional" error={errors.hazard}>
@@ -483,6 +578,7 @@ export default function InquiryPage() {
                 <textarea
                   id="requirements"
                   rows={4}
+                  maxLength={5000}
                   className="field resize-none"
                   placeholder="Special conditions, existing infrastructure, or specific requirements…"
                   value={fields.requirements}
@@ -552,6 +648,7 @@ export default function InquiryPage() {
                 <textarea
                   id="notes"
                   rows={3}
+                  maxLength={5000}
                   className="field resize-none"
                   placeholder="Anything else that would help us prepare an accurate proposal…"
                   value={fields.notes}
@@ -590,12 +687,21 @@ export default function InquiryPage() {
 
               {status === "error" && (
                 <div
-                  className="bg-error-container text-on-error-container rounded-md p-4 text-sm leading-relaxed"
+                  className={`rounded-md p-4 text-sm leading-relaxed ${
+                    notice?.wait
+                      ? "bg-tertiary-fixed text-on-tertiary-fixed"
+                      : "bg-error-container text-on-error-container"
+                  }`}
                   role="alert"
                 >
-                  <p className="font-bold mb-1">The inquiry could not be sent.</p>
+                  <p className="font-bold mb-1">
+                    {notice?.wait
+                      ? "Not sent yet — your answers are still here."
+                      : "The inquiry could not be sent."}
+                  </p>
                   <p>
-                    Please try again, or call us directly on{" "}
+                    {notice?.message ?? "Please try again."}{" "}
+                    You can also call us directly on{" "}
                     <a href={site.phoneHref} className="underline font-bold tnum">
                       {site.phone}
                     </a>
@@ -621,14 +727,16 @@ export default function InquiryPage() {
 
             <button
               type="submit"
-              disabled={status === "submitting"}
+              disabled={status === "submitting" || (currentStep === 4 && retryIn > 0)}
               className="gradient-primary text-on-primary px-10 py-4 rounded-lg font-headline font-bold flex items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:active:scale-100"
             >
               {currentStep < 4
                 ? "Next step"
-                : status === "submitting"
-                  ? "Sending…"
-                  : "Submit inquiry"}
+                : retryIn > 0
+                  ? `Send again in ${retryIn > 60 ? `${Math.ceil(retryIn / 60)} min` : `${retryIn}s`}`
+                  : status === "submitting"
+                    ? "Sending…"
+                    : "Submit inquiry"}
               {currentStep < 4 && <Icon name="arrow-right" size={18} strokeWidth={2} />}
             </button>
           </div>
