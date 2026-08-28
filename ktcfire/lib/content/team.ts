@@ -16,9 +16,9 @@ export type TeamMember = {
 
 export const team: TeamMember[] = [
   {
-    name: "Manu Chauhan",
-    role: "[PLACEHOLDER: Manu Chauhan's role/title]",
-    bio: "[PLACEHOLDER: 2–3 sentence biography for Manu Chauhan — experience, specialisation, notable projects]",
+    name: "Mukesh Chauhan",
+    role: "[PLACEHOLDER: Mukesh Chauhan's role/title]",
+    bio: "[PLACEHOLDER: 2–3 sentence biography for Mukesh Chauhan — experience, specialisation, notable projects]",
     image: "",
   },
   {
