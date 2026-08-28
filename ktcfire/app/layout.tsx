@@ -1,25 +1,34 @@
 import type { Metadata } from "next";
-import { Manrope, Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { site } from "@/lib/content/site";
 
-const manrope = Manrope({
+const manrope = localFont({
+  src: "../public/fonts/Manrope-Variable.woff2",
+  weight: "200 800",
   variable: "--font-manrope",
-  subsets: ["latin"],
   display: "swap",
 });
 
-const inter = Inter({
+const inter = localFont({
+  src: [
+    { path: "../public/fonts/Inter-Regular.woff2", weight: "400", style: "normal" },
+    { path: "../public/fonts/Inter-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../public/fonts/Inter-Bold.woff2", weight: "700", style: "normal" },
+  ],
   variable: "--font-inter",
-  subsets: ["latin"],
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Krishnatech Consulting & Engineer Services | Fire Protection Engineering",
-  description:
-    "Engineering Service Outsourcing (ESO) company specializing in fire detection, protection, and suppression system design. 25+ years of experience across pharma, automobile, petrochemical, power, and infrastructure sectors.",
+  metadataBase: new URL(site.url),
+  title: {
+    default: `${site.legalName} | Fire Protection Engineering`,
+    template: `%s | ${site.name}`,
+  },
+  description: site.description,
   keywords: [
     "fire protection engineering",
     "fire safety consulting",
@@ -30,6 +39,16 @@ export const metadata: Metadata = {
     "NBC codes",
     "engineering service outsourcing",
   ],
+  openGraph: {
+    type: "website",
+    siteName: site.legalName,
+    title: `${site.legalName} | Fire Protection Engineering`,
+    description: site.description,
+    url: site.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({
@@ -38,19 +57,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${manrope.variable} ${inter.variable} h-full`}
-    >
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${manrope.variable} ${inter.variable} h-full`}>
       <body className="min-h-full flex flex-col font-body antialiased bg-surface text-on-surface">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-on-primary focus:px-4 focus:py-2 focus:rounded-md"
+        >
+          Skip to content
+        </a>
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
