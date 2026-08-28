@@ -1,351 +1,337 @@
 import Link from "next/link";
 import ContactForm from "@/components/ContactForm";
+import Icon from "@/components/Icon";
+import { SprinklerSchematic, HydraulicCurve } from "@/components/Schematics";
+import { site } from "@/lib/content/site";
+import { serviceIndex, workflow } from "@/lib/content/services";
+import { featuredProjects } from "@/lib/content/projects";
+import { testimonials } from "@/lib/content/testimonials";
 
-/* ===============================================================
-   KRISHNATECH — HOME / LANDING PAGE
-   Sections: Hero · Services · Workflow · Expertise · Trust · CTA
-   =============================================================== */
+function Overline({ code, title }: { code: string; title: string }) {
+  return (
+    <p className="overline-code text-on-surface-variant mb-4">
+      <span className="text-accent-ink">{code}</span>
+      <span aria-hidden="true"> / </span>
+      {title}
+    </p>
+  );
+}
 
-// ── Service Data ────────────────────────────────────────────────
-const serviceCategories = [
-  {
-    title: "Water-Based Systems",
-    icon: "water_drop",
-    services: [
-      "Pump Room Design",
-      "Hydrant System",
-      "Sprinkler System",
-      "HV / MV Water Spray System",
-      "Water Curtain System",
-      "Foam / Water-based System",
-    ],
-  },
-  {
-    title: "Detection & Alarm",
-    icon: "notification_important",
-    services: [
-      "Intelligent Addressable Fire Alarm",
-      "Conventional Fire Alarm",
-      "VESDA (Very Early Smoke Detection)",
-    ],
-  },
-  {
-    title: "Suppression Systems",
-    icon: "fire_extinguisher",
-    services: [
-      "CO₂ Gas-based System",
-      "Argonite / FM 200 / Clean Agent",
-      "Portable Fire Extinguishers",
-    ],
-  },
-  {
-    title: "Specialty Systems",
-    icon: "settings_input_antenna",
-    services: [
-      "Public Address System (PA)",
-      "CCTV Surveillance",
-      "Water Leak Detection",
-      "Rodent Repellent System",
-    ],
-  },
-  {
-    title: "Engineering Services",
-    icon: "engineering",
-    services: [
-      "Hydraulic Analysis – Water & Compressed Air",
-      "CAD Services & Pre-Bid Support",
-      "Technical Datasheets & BOQ/MTO",
-      "Vendor Analysis & Bid Evaluation",
-    ],
-  },
-];
-
-const workflowSteps = [
-  {
-    num: "01",
-    title: "Consultation",
-    desc: "Initial risk assessment and requirement mapping.",
-  },
-  {
-    num: "02",
-    title: "Design",
-    desc: "System conceptualization and architectural integration.",
-  },
-  {
-    num: "03",
-    title: "Engineering",
-    desc: "Precise hydraulic calculations and advanced CAD drafting.",
-  },
-  {
-    num: "04",
-    title: "Commissioning",
-    desc: "Procurement inspection and certification for handover.",
-  },
-];
-
-const trustedClients = [
-  "MARUTI SUZUKI",
-  "IOCL",
-  "ONGC",
-  "BPCL",
-  "MANKIND PHARMA",
-  "NTPC",
-];
-
-// ── Page Component ──────────────────────────────────────────────
 export default function HomePage() {
   return (
     <>
-      {/* ═══════════════ HERO SECTION ═══════════════ */}
-      <section className="pt-32 pb-20 md:pt-40 md:pb-28 px-6 md:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left – Copy */}
-          <div>
-            <div className="inline-block px-3 py-1 bg-secondary-fixed text-on-secondary-fixed-variant rounded-full text-[10px] font-bold tracking-widest mb-6 uppercase">
-              Precision Safety Systems
-            </div>
-            <h1 className="font-headline font-extrabold text-4xl md:text-[3.5rem] leading-tight tracking-tighter text-on-surface mb-6">
-              Protecting lives
-              <br />
-              and assets starts
-              <br />
-              with <em className="not-italic text-primary">smart</em>
-              <br />
-              <em className="not-italic text-primary">engineering.</em>
-            </h1>
-            <p className="text-on-surface-variant max-w-md text-lg leading-relaxed mb-10">
-              Krishnatech delivers world-class fire protection consultancy,
-              blending rigorous code compliance with advanced hydraulic analysis
-              for complex industrial landscapes.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/#services"
-                className="gradient-primary text-white px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all shadow-lg"
-              >
-                Explore Our Capabilities
-              </Link>
-              <Link
-                href="/portfolio"
-                className="bg-surface-container-highest text-on-surface-variant px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all"
-              >
-                View Case Studies
-              </Link>
-            </div>
-          </div>
-
-          {/* Right – Hero Visual */}
-          <div className="relative">
-            <div className="aspect-[4/3] rounded-xl overflow-hidden bg-surface-container-high">
-              <div className="w-full h-full bg-gradient-to-br from-primary/10 to-tertiary-container/20 flex items-center justify-center">
-                <span className="material-symbols-outlined text-8xl text-primary/30" style={{ fontVariationSettings: "'FILL' 1" }}>
-                  local_fire_department
-                </span>
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="grid-paper">
+        <div className="pt-36 pb-16 md:pt-44 md:pb-24 px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-7">
+              <Overline code="KTC / 00" title="Engineering Service Outsourcing" />
+              <h1 className="font-headline font-extrabold text-4xl md:text-[3.5rem] leading-[1.05] tracking-tighter text-on-surface mb-6 max-w-2xl">
+                Protecting lives and assets starts with{" "}
+                <em className="not-italic text-primary">smart engineering.</em>
+              </h1>
+              <p className="text-on-surface-variant max-w-xl text-lg leading-relaxed mb-4">
+                Krishnatech is your outsourced fire protection design office.
+                We take a project from inputs to a complete, code-compliant
+                design package — hydrant, sprinkler, spray, foam, detection and
+                suppression systems — delivered remotely, under your name.
+              </p>
+              <p className="overline-code text-on-surface-variant mb-10">
+                Designing to {site.codes.join(" · ")} and state-wise AHJ
+                requirements
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Link
+                  href="/inquiry"
+                  className="gradient-primary text-on-primary px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
+                >
+                  Start an Inquiry
+                  <Icon name="arrow-right" size={16} strokeWidth={2} />
+                </Link>
+                <Link
+                  href="/portfolio"
+                  className="bg-surface-container-highest text-on-surface px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all"
+                >
+                  View the Project Index
+                </Link>
               </div>
             </div>
-            {/* Floating Badge */}
-            <div className="absolute -bottom-4 right-4 md:right-8 bg-surface-container-lowest shadow-ambient rounded-lg px-5 py-3 flex items-center gap-3">
-              <span
-                className="material-symbols-outlined text-primary text-2xl"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                verified_user
-              </span>
-              <div>
-                <p className="text-[10px] uppercase tracking-widest font-bold text-on-surface-variant">
-                  NPB Certified
-                </p>
-                <p className="text-xs font-bold text-on-surface">
-                  Global Safety Standards Compliant
-                </p>
+
+            <div className="lg:col-span-5">
+              <div className="rounded-lg overflow-hidden shadow-ambient">
+                <SprinklerSchematic className="w-full h-auto block" />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ═══════════════ ESO CONCEPT SECTION ═══════════════ */}
-      <section className="py-16 bg-surface-container-highest">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-primary tracking-tight mb-4">
-                The ESO Advantage
-              </h2>
-              <p className="text-xl font-headline font-bold text-secondary mb-6">
-                Engineering Services Outsourcing
+      {/* ── STAT STRIP ───────────────────────────────────────── */}
+      <section aria-label="Key figures" className="bg-surface-container-low">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto py-12 md:py-16 grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-10">
+          {site.stats.map((stat) => (
+            <div key={stat.label}>
+              <p className="font-headline font-extrabold text-5xl md:text-6xl text-primary tracking-tighter tnum">
+                {stat.value}
               </p>
-              <p className="text-on-surface-variant leading-relaxed mb-6">
-                Many consultants and contractors lack in-house designing resources. Hiring full-time engineers is expensive and time-consuming. We bridge this gap by offering on-demand, outsourced fire system design consulting.
+              <p className="font-headline font-bold text-on-surface mt-2">
+                {stat.label}
               </p>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-3 text-sm text-on-surface">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
-                  Complete Fire Protection Designing delivered remotely.
-                </li>
-                <li className="flex items-start gap-3 text-sm text-on-surface">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
-                  Expert in National and International Fire Safety Codes (NBC, IS, NFPA, OISD & FM).
-                </li>
-                <li className="flex items-start gap-3 text-sm text-on-surface">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check_circle</span>
-                  White-label service: You retain complete client-facing control.
-                </li>
-              </ul>
-            </div>
-            <div className="bg-surface-container-low p-8 rounded-xl ghost-border shadow-ambient border-t-4 border-t-secondary">
-              <h3 className="font-headline font-bold text-xl mb-4 text-on-surface">Why Outsource to Us?</h3>
-              <p className="text-sm text-on-surface-variant leading-relaxed">
-                Detailing to the level of contracting at the consulting phase to minimize costs and maximize profits. Enjoy scalable, cost-effective engineering with fast turnarounds and strict confidentiality.
+              <p className="text-xs text-on-surface-variant mt-1 leading-relaxed max-w-[16rem]">
+                {stat.note}
               </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ SERVICES SECTION ═══════════════ */}
-      <section id="services" className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
-          <div>
-            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-3">
-              Core Engineering Services
-            </h2>
-            <p className="text-on-surface-variant max-w-xl">
-              From initial risk assessment to commissioning, we provide
-              end-to-end fire protection solutions tailored to your
-              infrastructure&apos;s unique requirements.
-            </p>
-          </div>
-          <Link
-            href="/inquiry"
-            className="text-primary font-headline font-bold text-sm flex items-center gap-1 hover:gap-2 transition-all shrink-0"
-          >
-            Full Service Catalog
-            <span className="material-symbols-outlined text-base">
-              arrow_forward
-            </span>
-          </Link>
-        </div>
-
-        {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {serviceCategories.map((cat) => (
-            <div
-              key={cat.title}
-              className="bg-surface-container-low p-8 rounded-xl hover:shadow-ambient transition-all duration-300 group"
-            >
-              <span
-                className="material-symbols-outlined text-3xl text-primary-container mb-6 block"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                {cat.icon}
-              </span>
-              <h3 className="font-headline font-bold text-lg text-on-surface mb-4">
-                {cat.title}
-              </h3>
-              <ul className="space-y-2">
-                {cat.services.map((s) => (
-                  <li
-                    key={s}
-                    className="text-sm text-on-surface-variant flex items-start gap-2"
-                  >
-                    <span className="material-symbols-outlined text-primary text-sm mt-0.5 shrink-0" style={{ fontSize: "14px" }}>
-                      check_circle
-                    </span>
-                    {s}
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ═══════════════ WORKFLOW SECTION ═══════════════ */}
-      <section className="py-20 md:py-28 bg-surface-container-low">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto text-center">
-          <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-4">
-            Engineering Workflow
-          </h2>
-          <p className="text-on-surface-variant max-w-xl mx-auto mb-16">
-            Our systematic approach ensures every project meets international
-            safety benchmarks while optimizing cost and efficiency.
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            {workflowSteps.map((step) => (
-              <div key={step.num} className="flex flex-col items-center">
-                <div className="w-16 h-16 rounded-full gradient-primary text-white flex items-center justify-center font-headline font-extrabold text-xl mb-6 shadow-lg">
-                  {step.num}
-                </div>
-                <h3 className="font-headline font-bold text-on-surface mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-xs text-on-surface-variant leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ EXPERTISE SECTION ═══════════════ */}
+      {/* ── THE ESO MODEL ────────────────────────────────────── */}
       <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          {/* Image Placeholder */}
-          <div className="aspect-[4/3] rounded-xl overflow-hidden bg-surface-container-high relative">
-            <div className="w-full h-full bg-gradient-to-br from-primary/5 to-secondary/10 flex items-center justify-center">
-              <span className="material-symbols-outlined text-8xl text-primary/20" style={{ fontVariationSettings: "'FILL' 1" }}>
-                precision_manufacturing
-              </span>
-            </div>
-          </div>
-
-          {/* Copy */}
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5">
+            <Overline code="KTC / 01" title="The ESO Model" />
             <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-6">
-              Unrivaled Expertise in Fire Safety
+              A design office you don&apos;t have to hire.
             </h2>
-            <p className="text-on-surface-variant leading-relaxed mb-10">
-              We don&apos;t just design systems; we engineer peace of mind. Our
-              team brings decades of combined experience to every blueprint.
+            <p className="text-on-surface-variant leading-relaxed mb-4">
+              Many consultants and contractors lack in-house design resources,
+              and hiring full-time engineers is expensive and slow. Compliance
+              with NBC, IS, NFPA, OISD and FM codes requires specialised
+              expertise — and deadlines are rarely generous.
             </p>
-
-            <div className="space-y-8">
+            <p className="text-on-surface-variant leading-relaxed">
+              Engineering Service Outsourcing closes that gap: on-demand fire
+              system design consulting — concepting, consulting and costing —
+              detailed to the level of contracting at the consulting stage, to
+              minimise costs and maximise profits.
+            </p>
+          </div>
+          <div className="lg:col-span-6 lg:col-start-7">
+            <ul className="space-y-6">
               {[
                 {
-                  icon: "shield",
-                  title: "25+ Years Experience",
-                  desc: "A legacy of successful high-hazard projects across industries.",
+                  title: "Complete design, delivered remotely",
+                  desc: "Full fire protection design packages — DBR, drawings and documentation — without adding headcount.",
                 },
                 {
-                  icon: "gavel",
-                  title: "Full Code Compliance",
-                  desc: "Expertise in NFPA, NBC, and local AHJ safety regulations.",
+                  title: "Code expertise on tap",
+                  desc: "National and international fire safety codes, plus state-wise AHJ local requirement compliance.",
                 },
                 {
-                  icon: "speed",
-                  title: "Fast Turnaround",
-                  desc: "Optimized engineering workflows that meet tight construction timelines.",
+                  title: "White-label by default",
+                  desc: "You retain complete client-facing control; our work ships under your name.",
+                },
+                {
+                  title: "Scalable and deadline-friendly",
+                  desc: "Cost-effective for all project sizes, with fast turnarounds and strict confidentiality.",
                 },
               ].map((item) => (
-                <div key={item.title} className="flex gap-4">
-                  <span
-                    className="material-symbols-outlined text-primary text-2xl mt-1 shrink-0"
-                    style={{ fontVariationSettings: "'FILL' 1" }}
-                  >
-                    {item.icon}
-                  </span>
+                <li key={item.title} className="flex gap-4 bg-surface-container-low p-6 rounded-lg">
+                  <Icon
+                    name="check"
+                    size={20}
+                    strokeWidth={2.5}
+                    className="text-secondary shrink-0 mt-0.5"
+                  />
                   <div>
                     <h3 className="font-headline font-bold text-on-surface mb-1">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-on-surface-variant">
+                    <p className="text-sm text-on-surface-variant leading-relaxed">
                       {item.desc}
                     </p>
                   </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES INDEX ───────────────────────────────────── */}
+      <section className="py-20 md:py-28 bg-surface-container-low">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+            <div>
+              <Overline code="KTC / 02" title="Services" />
+              <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight">
+                The drawing index.
+              </h2>
+            </div>
+            <Link
+              href="/services"
+              className="text-primary font-headline font-bold text-sm inline-flex items-center gap-1.5 hover:gap-2.5 transition-all shrink-0"
+            >
+              Full service catalogue
+              <Icon name="arrow-right" size={16} strokeWidth={2} />
+            </Link>
+          </div>
+
+          <ul>
+            {serviceIndex.map((s) => (
+              <li key={s.code}>
+                <Link
+                  href={`/services#${s.code.toLowerCase()}`}
+                  className="group grid grid-cols-[auto_1fr_auto] md:grid-cols-[7rem_16rem_1fr_auto] items-baseline md:items-center gap-x-6 gap-y-1 py-5 px-4 -mx-4 rounded-md hover:bg-surface-container transition-colors"
+                >
+                  <span className="overline-code text-accent-ink tnum">{s.code}</span>
+                  <span className="font-headline font-bold text-lg text-on-surface">
+                    {s.title}
+                  </span>
+                  <span className="hidden md:block text-sm text-on-surface-variant leading-relaxed pr-8">
+                    {s.summary}
+                  </span>
+                  <span className="justify-self-end flex items-center gap-3 text-on-surface-variant">
+                    <span className="text-xs tnum">{s.count} items</span>
+                    <Icon
+                      name="arrow-right"
+                      size={16}
+                      strokeWidth={2}
+                      className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+                    />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* ── WORKFLOW ─────────────────────────────────────────── */}
+      <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
+        <div className="max-w-xl mb-14">
+          <Overline code="KTC / 03" title="Workflow" />
+          <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-4">
+            Four steps from inputs to handover.
+          </h2>
+          <p className="text-on-surface-variant leading-relaxed">
+            The engagement is deliberately simple: you stay in front of your
+            client, we run the drawing board.
+          </p>
+        </div>
+
+        <ol className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
+          {workflow.map((step) => (
+            <li key={step.num}>
+              <p className="font-headline font-extrabold text-6xl text-on-secondary-fixed tracking-tighter tnum mb-4">
+                {step.num}
+              </p>
+              <h3 className="font-headline font-bold text-on-surface mb-2">
+                {step.title}
+              </h3>
+              <p className="text-sm text-on-surface-variant leading-relaxed">
+                {step.desc}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ── DELIVERABLES SHOWCASE ────────────────────────────── */}
+      <section className="py-20 md:py-28 bg-surface-container-low">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto">
+          <div className="max-w-xl mb-12">
+            <Overline code="KTC / 04" title="Deliverables" />
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight">
+              Engineering you can put a title block on.
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div className="rounded-lg overflow-hidden bg-surface-container-lowest">
+              <HydraulicCurve className="w-full h-auto block" />
+              <div className="p-8">
+                <h3 className="font-headline font-bold text-xl text-primary mb-2">
+                  Hydraulic analysis
+                </h3>
+                <p className="text-sm text-on-surface-variant leading-relaxed">
+                  Pump and system curves, pressure gradients and orifice plate
+                  calculations for water-based and compressed-air systems —
+                  over 200 analyses delivered in the last five years.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest rounded-lg p-8 md:p-10">
+              <h3 className="font-headline font-bold text-xl text-primary mb-6">
+                The document set
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  "Design basis reports (DBR)",
+                  "As-Built, GFC and IFC drawings",
+                  "Shop drawings",
+                  "Technical datasheets",
+                  "BOQ / MTO and cost estimates",
+                  "Tender techno-commercial documents",
+                  "Vendor analysis and technical bid evaluation",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-3 text-sm text-on-surface">
+                    <Icon
+                      name="document"
+                      size={18}
+                      className="text-tertiary shrink-0"
+                    />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <p className="text-xs text-on-surface-variant mt-8 leading-relaxed">
+                Every package is prepared for statutory approval — including
+                Fire NOC support and third-party approvals where required.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CLIENTS & SECTORS ────────────────────────────────── */}
+      <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <Overline code="KTC / 05" title="Track Record" />
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-6">
+              Who we work with.
+            </h2>
+            <ul className="space-y-3 mb-8">
+              {site.clientTypes.map((t) => (
+                <li key={t} className="flex items-center gap-3 text-sm text-on-surface">
+                  <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0" aria-hidden="true" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/portfolio"
+              className="text-primary font-headline font-bold text-sm inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
+            >
+              53 projects in the index
+              <Icon name="arrow-right" size={16} strokeWidth={2} />
+            </Link>
+          </div>
+
+          <div className="lg:col-span-7 lg:col-start-6">
+            <p className="overline-code text-on-surface-variant mb-6">
+              Selected end clients, via consultants and contractors
+            </p>
+            <ul className="grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-5 mb-12">
+              {site.featuredClients.map((client) => (
+                <li
+                  key={client}
+                  className="font-headline font-bold text-on-surface-variant tracking-tight"
+                >
+                  {client}
+                </li>
+              ))}
+            </ul>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {featuredProjects.map((p) => (
+                <div key={p.title} className="bg-surface-container-low rounded-lg p-6">
+                  <p className="overline-code text-accent-ink mb-2">{p.sector}</p>
+                  <h3 className="font-headline font-bold text-on-surface leading-snug mb-1">
+                    {p.title}
+                  </h3>
+                  <p className="text-xs text-on-surface-variant">{p.client}</p>
                 </div>
               ))}
             </div>
@@ -353,126 +339,90 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ═══════════════ TECHNICAL SHOWCASE SECTION ═══════════════ */}
-      <section className="py-20 md:py-28 bg-surface-container-highest">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-4">
-              System Detailed Drawings & Analysis
-            </h2>
-            <p className="text-on-surface-variant max-w-2xl mx-auto">
-              Precision engineering backed by advanced hydraulic modeling and state-of-the-art CAD drafting techniques.
+      {/* ── TESTIMONIALS (renders only when real quotes exist) ── */}
+      {testimonials.length > 0 && (
+        <section className="py-20 md:py-28 bg-surface-container-low">
+          <div className="px-6 md:px-8 max-w-7xl mx-auto">
+            <Overline code="KTC / 06" title="Testimonials" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              {testimonials.map((t) => (
+                <figure key={t.name} className="bg-surface-container-lowest rounded-lg p-8">
+                  <blockquote className="text-on-surface leading-relaxed mb-6">
+                    &ldquo;{t.quote}&rdquo;
+                  </blockquote>
+                  <figcaption className="text-sm">
+                    <span className="font-headline font-bold text-on-surface block">
+                      {t.name}
+                    </span>
+                    <span className="text-on-surface-variant">
+                      {t.role}, {t.company}
+                    </span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── CONTACT ──────────────────────────────────────────── */}
+      <section id="contact" className="bg-ink grid-paper-dark py-20 md:py-28 scroll-mt-24">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-5 text-on-ink">
+            <p className="overline-code text-secondary mb-4">
+              KTC / 07 <span aria-hidden="true">/</span> Contact
             </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-ambient group">
-              <div className="aspect-[4/3] relative overflow-hidden bg-black">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/tech-drawing.png" alt="Technical CAD Drawing" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-              </div>
-              <div className="p-8">
-                <h3 className="font-headline font-bold text-xl text-primary mb-2">High-Precision CAD Drafting</h3>
-                <p className="text-sm text-on-surface-variant">Detailed blueprints for fire sprinkler and hydrant systems, ready for construction and execution.</p>
-              </div>
-            </div>
-
-            <div className="bg-surface-container-low rounded-xl overflow-hidden shadow-ambient group">
-              <div className="aspect-[4/3] relative overflow-hidden bg-black">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/hydraulic-analysis.png" alt="Hydraulic Flow Analysis" className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" />
-              </div>
-              <div className="p-8">
-                <h3 className="font-headline font-bold text-secondary mb-2">Hydraulic Analysis</h3>
-                <p className="text-sm text-on-surface-variant">Advanced 3D modeling and pressure gradient analysis for optimal water flow and system reliability.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ TRUSTED BY SECTION ═══════════════ */}
-      <section className="py-16 bg-surface-container-low">
-        <div className="px-6 md:px-8 max-w-7xl mx-auto text-center">
-          <p className="text-[10px] uppercase tracking-[0.25em] font-bold text-on-surface-variant mb-10">
-            Trusted by Industry Leaders
-          </p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 items-center">
-            {trustedClients.map((client) => (
-              <div
-                key={client}
-                className="flex flex-col items-center justify-center p-4 bg-surface-container-highest rounded-lg w-32 h-24 hover:shadow-sm transition-all"
-              >
-                <span className="material-symbols-outlined text-outline-variant text-3xl mb-2">
-                  domain
-                </span>
-                <span className="text-xs font-headline font-bold text-on-surface text-center leading-tight">
-                  {client}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════════ CTA + CONTACT FORM ═══════════════ */}
-      <section id="contact" className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 rounded-xl overflow-hidden shadow-ambient">
-          {/* Left – Info */}
-          <div className="gradient-primary p-10 md:p-14 text-white flex flex-col justify-center">
-            <h2 className="font-headline font-extrabold text-3xl md:text-4xl mb-4">
-              Start Your Consultation
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl mb-4 tracking-tight">
+              Put us on your next drawing.
             </h2>
-            <p className="text-white/80 leading-relaxed mb-10 max-w-sm">
-              Ready to secure your facility with precision engineering? Fill out
-              the form, and our engineering team will get back to you within 24
-              hours.
+            <p className="text-on-ink-variant leading-relaxed mb-10 max-w-md">
+              Send a brief and our engineering team will come back within 24
+              hours — or call and talk it through first.
             </p>
-            <div className="space-y-4 text-sm">
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-lg">mail</span>
-                <span>solutionswithktc@gmail.com</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="material-symbols-outlined text-lg">call</span>
-                <span>+91 9769367666</span>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-lg mt-1">location_city</span>
+            <dl className="space-y-6 text-sm">
+              <div className="flex items-center gap-4">
+                <Icon name="phone" size={20} className="text-secondary shrink-0" />
                 <div>
-                  <div className="font-bold mb-1">Registered Office</div>
-                  <div className="text-white/80 leading-relaxed text-xs">
-                    Krishnatech Consulting Engineer Services,<br />
-                    Ghaziabad, UP
-                  </div>
+                  <dt className="overline-code text-on-ink-variant">Phone</dt>
+                  <dd>
+                    <a href={site.phoneHref} className="hover:underline tnum">
+                      {site.phone}
+                    </a>
+                  </dd>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-lg mt-1">business</span>
+              <div className="flex items-center gap-4">
+                <Icon name="mail" size={20} className="text-secondary shrink-0" />
                 <div>
-                  <div className="font-bold mb-1">Current Office</div>
-                  <div className="text-white/80 leading-relaxed text-xs">
-                    Main Engineering Hub,<br />
-                    NCR Region, India
-                  </div>
+                  <dt className="overline-code text-on-ink-variant">Email</dt>
+                  <dd>
+                    <a href={`mailto:${site.email}`} className="hover:underline break-all">
+                      {site.email}
+                    </a>
+                  </dd>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="material-symbols-outlined text-lg mt-1">corporate_fare</span>
-                <div>
-                  <div className="font-bold mb-1">Mumbai Office</div>
-                  <div className="text-white/80 leading-relaxed text-xs">
-                    B/17, Janardan Apartments,<br />
-                    Natwarya Shankar Ghankar Marg,<br />
-                    Dadar(W), Mumbai-400028
+              {site.addresses.map((addr) => (
+                <div key={addr.label} className="flex items-start gap-4">
+                  <Icon name="pin" size={20} className="text-secondary shrink-0 mt-0.5" />
+                  <div>
+                    <dt className="overline-code text-on-ink-variant">{addr.label}</dt>
+                    <dd className="text-on-ink-variant leading-relaxed">
+                      {addr.lines.map((line) => (
+                        <span key={line} className="block">
+                          {line}
+                        </span>
+                      ))}
+                    </dd>
                   </div>
                 </div>
-              </div>
-            </div>
+              ))}
+            </dl>
           </div>
 
-          {/* Right – Form */}
-          <ContactForm />
+          <div className="lg:col-span-6 lg:col-start-7">
+            <ContactForm />
+          </div>
         </div>
       </section>
     </>
