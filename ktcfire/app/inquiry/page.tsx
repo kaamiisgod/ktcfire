@@ -1,11 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-/* ===============================================================
-   KRISHNATECH — SERVICE INQUIRY FORM (Multi-Step)
-   Steps: Company → Project → Specs → Budget
-   =============================================================== */
+import Icon from "@/components/Icon";
+import { site } from "@/lib/content/site";
 
 const steps = [
   { num: 1, label: "Company" },
@@ -27,82 +24,276 @@ const projectTypes = [
   "Other",
 ];
 
-const infoCards = [
-  {
-    icon: "verified_user",
-    title: "Safety Standard Compliance",
-    desc: "All designs are reviewed against NFPA, NBC, and local building codes by certified engineers.",
-  },
-  {
-    icon: "precision_manufacturing",
-    title: "High-Precision Modeling",
-    desc: "Utilizing BIM and hydraulic analysis tools for maximum system efficiency and reliability.",
-  },
-  {
-    icon: "support_agent",
-    title: "Consultancy Access",
-    desc: "Inquiry submissions are prioritized for 24-hour initial engineering feedback cycles.",
-  },
+const hazardOptions = [
+  "Light Hazard",
+  "Ordinary Hazard Group 1",
+  "Ordinary Hazard Group 2",
+  "Extra Hazard Group 1",
+  "Extra Hazard Group 2",
+  "Not sure yet",
 ];
+
+const codeOptions = ["NFPA", "NBC (India)", "IS Codes", "OISD", "FM Global"];
+
+const budgetOptions = [
+  "Under ₹10 Lakhs",
+  "₹10 – ₹50 Lakhs",
+  "₹50 Lakhs – ₹2 Crores",
+  "₹2 – ₹10 Crores",
+  "Above ₹10 Crores",
+];
+
+const timelineOptions = [
+  "Urgent (less than 1 month)",
+  "1 – 3 months",
+  "3 – 6 months",
+  "6 – 12 months",
+  "12+ months",
+];
+
+const scopeOptions = [
+  "Pre-Bid Design",
+  "Detailed Engineering",
+  "Shop Drawings",
+  "Procurement Support",
+  "Commissioning Supervision",
+  "Fire NOC Support",
+];
+
+type Fields = {
+  company: string;
+  contactPerson: string;
+  phone: string;
+  email: string;
+  projectType: string;
+  location: string;
+  area: string;
+  hazard: string;
+  codes: string[];
+  requirements: string;
+  budget: string;
+  timeline: string;
+  scope: string[];
+  notes: string;
+};
+
+const initialFields: Fields = {
+  company: "",
+  contactPerson: "",
+  phone: "",
+  email: "",
+  projectType: "",
+  location: "",
+  area: "",
+  hazard: "",
+  codes: [],
+  requirements: "",
+  budget: "",
+  timeline: "",
+  scope: [],
+  notes: "",
+};
+
+type Errors = Partial<Record<keyof Fields, string>>;
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validateStep(step: number, f: Fields): Errors {
+  const errors: Errors = {};
+  if (step === 1) {
+    if (!f.company.trim()) errors.company = "Enter your company name.";
+    if (!f.contactPerson.trim()) errors.contactPerson = "Enter a contact person.";
+    if (!f.phone.trim()) errors.phone = "Enter a phone number.";
+    else if (!/^[+\d][\d\s\-()]{6,}$/.test(f.phone.trim()))
+      errors.phone = "Enter a valid phone number.";
+    if (!f.email.trim()) errors.email = "Enter an email address.";
+    else if (!EMAIL_RE.test(f.email.trim()))
+      errors.email = "Enter a valid email address.";
+  }
+  if (step === 2) {
+    if (!f.projectType) errors.projectType = "Select a project type.";
+    if (!f.location.trim()) errors.location = "Enter the project location.";
+  }
+  return errors;
+}
+
+function Field({
+  id,
+  label,
+  error,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-2">
+      <label htmlFor={id} className="overline-code text-on-surface-variant block">
+        {label}
+      </label>
+      {children}
+      {error && (
+        <p id={`${id}-error`} className="field-error" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
 
 export default function InquiryPage() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [fields, setFields] = useState<Fields>(initialFields);
+  const [errors, setErrors] = useState<Errors>({});
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
+    "idle",
+  );
+  const [startedAt] = useState(() => Date.now());
+  const [honeypot, setHoneypot] = useState("");
 
-  const goNext = () => setCurrentStep((s) => Math.min(s + 1, 4));
-  const goBack = () => setCurrentStep((s) => Math.max(s - 1, 1));
+  const set = <K extends keyof Fields>(key: K, value: Fields[K]) =>
+    setFields((f) => ({ ...f, [key]: value }));
+
+  const toggle = (key: "codes" | "scope", value: string) =>
+    setFields((f) => ({
+      ...f,
+      [key]: f[key].includes(value)
+        ? f[key].filter((v) => v !== value)
+        : [...f[key], value],
+    }));
+
+  const goNext = () => {
+    const stepErrors = validateStep(currentStep, fields);
+    setErrors(stepErrors);
+    if (Object.keys(stepErrors).length > 0) return;
+    setCurrentStep((s) => Math.min(s + 1, 4));
+  };
+
+  const goBack = () => {
+    setErrors({});
+    setCurrentStep((s) => Math.max(s - 1, 1));
+  };
+
+  const handleSubmit = async () => {
+    const allErrors = { ...validateStep(1, fields), ...validateStep(2, fields) };
+    if (Object.keys(allErrors).length > 0) {
+      setErrors(allErrors);
+      setCurrentStep(allErrors.company || allErrors.contactPerson || allErrors.phone || allErrors.email ? 1 : 2);
+      return;
+    }
+    setStatus("submitting");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          form: "inquiry",
+          startedAt,
+          website: honeypot,
+          fields: {
+            ...fields,
+            codes: fields.codes.join(", "),
+            scope: fields.scope.join(", "),
+          },
+        }),
+      });
+      if (!res.ok) {
+        setStatus("error");
+        return;
+      }
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <div className="pt-36 pb-24 px-4 sm:px-6 md:px-8 max-w-3xl mx-auto">
+        <div className="bg-surface-container-low rounded-lg p-10 md:p-16 text-center">
+          <Icon name="check-circle" size={64} className="text-primary mx-auto mb-6" />
+          <h1 className="font-headline font-extrabold text-3xl text-on-surface mb-4 tracking-tight">
+            Inquiry received
+          </h1>
+          <p className="text-on-surface-variant leading-relaxed max-w-md mx-auto mb-4">
+            Thank you, {fields.contactPerson.split(" ")[0] || "there"}. Our
+            engineering team will review the details and come back to{" "}
+            <span className="font-semibold text-on-surface">{fields.email}</span>{" "}
+            within 24 hours.
+          </p>
+          <p className="text-sm text-on-surface-variant leading-relaxed max-w-md mx-auto">
+            Have drawings or specifications ready? You can attach them when we
+            reply, or send them ahead to{" "}
+            <a href={`mailto:${site.email}`} className="text-primary font-semibold hover:underline">
+              {site.email}
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="pt-32 pb-24 px-4 sm:px-6 md:px-8 max-w-4xl mx-auto">
-      {/* ═══════════════ PROGRESS STEPPER ═══════════════ */}
-      <div className="mb-16">
-        <div className="flex items-center justify-between relative">
-          {/* Background line */}
-          <div className="absolute top-5 left-0 w-full h-0.5 bg-surface-container-highest -z-10" />
-          {/* Progress line */}
+    <div className="pt-36 pb-24 px-4 sm:px-6 md:px-8 max-w-4xl mx-auto">
+      {/* Progress stepper */}
+      <div className="mb-14">
+        <ol className="flex items-center justify-between relative">
           <div
-            className="absolute top-5 left-0 h-0.5 bg-tertiary-container -z-10 transition-all duration-500"
-            style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+            className="absolute top-5 left-0 w-full h-0.5 bg-surface-container-highest -z-10"
+            aria-hidden="true"
           />
-
+          <div
+            className="absolute top-5 left-0 h-0.5 bg-tertiary -z-10 transition-all duration-500"
+            style={{ width: `${((currentStep - 1) / (steps.length - 1)) * 100}%` }}
+            aria-hidden="true"
+          />
           {steps.map((step) => (
-            <div key={step.num} className="flex flex-col items-center gap-3">
+            <li
+              key={step.num}
+              className="flex flex-col items-center gap-3"
+              aria-current={step.num === currentStep ? "step" : undefined}
+            >
               <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 tnum ${
                   step.num <= currentStep
-                    ? "bg-tertiary-container text-on-tertiary-container shadow-sm"
+                    ? "bg-primary text-on-primary"
                     : "bg-surface-container-highest text-outline"
                 }`}
               >
                 {step.num < currentStep ? (
-                  <span className="material-symbols-outlined text-lg">check</span>
+                  <Icon name="check" size={18} strokeWidth={2.5} label="Completed" />
                 ) : (
                   step.num
                 )}
               </div>
               <span
-                className={`font-label text-xs font-semibold uppercase tracking-widest ${
+                className={`overline-code ${
                   step.num <= currentStep ? "text-primary" : "text-outline"
                 }`}
               >
                 {step.label}
               </span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
 
-      {/* ═══════════════ FORM CANVAS ═══════════════ */}
-      <section className="bg-surface-container-low p-8 md:p-12 rounded-xl shadow-ambient">
+      {/* Form canvas */}
+      <section className="bg-surface-container-low p-8 md:p-12 rounded-lg">
         <div className="mb-10">
-          <h1 className="font-headline text-3xl font-extrabold text-primary mb-2">
+          <p className="overline-code text-accent-ink mb-2">KTC / INQUIRY</p>
+          <h1 className="font-headline text-3xl font-extrabold text-on-surface tracking-tight mb-2">
             Technical Inquiry
           </h1>
-          <p className="text-on-surface-variant font-body">
+          <p className="text-on-surface-variant">
             Step {currentStep} of 4:{" "}
-            {currentStep === 1 && "Company Details & Contact Information"}
-            {currentStep === 2 && "Project Type & Documentation"}
-            {currentStep === 3 && "Technical Specifications"}
-            {currentStep === 4 && "Budget & Timeline"}
+            {currentStep === 1 && "Company details & contact information"}
+            {currentStep === 2 && "Project type & location"}
+            {currentStep === 3 && "Technical specifications"}
+            {currentStep === 4 && "Budget, timeline & review"}
           </p>
         </div>
 
@@ -110,279 +301,363 @@ export default function InquiryPage() {
           onSubmit={(e) => {
             e.preventDefault();
             if (currentStep < 4) goNext();
+            else handleSubmit();
           }}
+          noValidate
         >
-          {/* STEP 1: Company Details */}
+          {/* Honeypot */}
+          <div className="absolute -left-[9999px] top-auto" aria-hidden="true">
+            <label htmlFor="inquiry-website">Website</label>
+            <input
+              id="inquiry-website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
+          {/* STEP 1 */}
           {currentStep === 1 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Company Name
-                </label>
+              <Field id="company" label="Company name" error={errors.company}>
                 <input
+                  id="company"
                   type="text"
-                  placeholder="Engineering Firm LLC"
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                  autoComplete="organization"
+                  required
+                  className="field"
+                  value={fields.company}
+                  onChange={(e) => set("company", e.target.value)}
+                  aria-invalid={errors.company ? true : undefined}
+                  aria-describedby={errors.company ? "company-error" : undefined}
                 />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Contact Person
-                </label>
+              </Field>
+              <Field id="contactPerson" label="Contact person" error={errors.contactPerson}>
                 <input
+                  id="contactPerson"
                   type="text"
-                  placeholder="Alex Rivera"
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                  autoComplete="name"
+                  required
+                  className="field"
+                  value={fields.contactPerson}
+                  onChange={(e) => set("contactPerson", e.target.value)}
+                  aria-invalid={errors.contactPerson ? true : undefined}
+                  aria-describedby={
+                    errors.contactPerson ? "contactPerson-error" : undefined
+                  }
                 />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Phone Number
-                </label>
+              </Field>
+              <Field id="phone" label="Phone number" error={errors.phone}>
                 <input
+                  id="phone"
                   type="tel"
-                  placeholder="+91 9876 543 210"
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                  autoComplete="tel"
+                  required
+                  className="field tnum"
+                  value={fields.phone}
+                  onChange={(e) => set("phone", e.target.value)}
+                  aria-invalid={errors.phone ? true : undefined}
+                  aria-describedby={errors.phone ? "phone-error" : undefined}
                 />
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Email Address
-                </label>
+              </Field>
+              <Field id="email" label="Email address" error={errors.email}>
                 <input
+                  id="email"
                   type="email"
-                  placeholder="alex@company.com"
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                  autoComplete="email"
+                  required
+                  className="field"
+                  value={fields.email}
+                  onChange={(e) => set("email", e.target.value)}
+                  aria-invalid={errors.email ? true : undefined}
+                  aria-describedby={errors.email ? "email-error" : undefined}
                 />
-              </div>
+              </Field>
             </div>
           )}
 
-          {/* STEP 2: Project Type */}
+          {/* STEP 2 */}
           {currentStep === 2 && (
             <div className="space-y-8">
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Project Type
-                </label>
-                <select className="w-full bg-surface-container-high border-none p-4 rounded-lg focus:ring-primary text-on-surface font-body">
-                  <option value="">Select a system type...</option>
+              <Field id="projectType" label="Project type" error={errors.projectType}>
+                <select
+                  id="projectType"
+                  required
+                  className="field"
+                  value={fields.projectType}
+                  onChange={(e) => set("projectType", e.target.value)}
+                  aria-invalid={errors.projectType ? true : undefined}
+                  aria-describedby={errors.projectType ? "projectType-error" : undefined}
+                >
+                  <option value="">Select a system type…</option>
                   {projectTypes.map((t) => (
                     <option key={t} value={t}>
                       {t}
                     </option>
                   ))}
                 </select>
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Project Location
-                </label>
+              </Field>
+              <Field id="location" label="Project location" error={errors.location}>
                 <input
+                  id="location"
                   type="text"
+                  required
+                  className="field"
                   placeholder="City, State, Country"
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                  value={fields.location}
+                  onChange={(e) => set("location", e.target.value)}
+                  aria-invalid={errors.location ? true : undefined}
+                  aria-describedby={errors.location ? "location-error" : undefined}
                 />
-              </div>
-              {/* File Upload */}
-              <div className="p-12 border-2 border-dashed border-outline-variant rounded-xl flex flex-col items-center text-center bg-surface-container-lowest/50">
-                <span
-                  className="material-symbols-outlined text-4xl text-primary mb-4"
-                >
-                  upload_file
-                </span>
-                <p className="font-headline font-bold text-lg mb-1">
-                  Upload Technical Drawings
-                </p>
-                <p className="text-sm text-outline mb-6">
-                  PDF, DWG, or BIM files supported. Max 50MB.
-                </p>
-                <button
-                  type="button"
-                  className="bg-surface-variant text-on-surface-variant px-6 py-2 rounded-lg font-bold text-sm hover:bg-surface-container-highest transition-colors"
-                >
-                  Select Files
-                </button>
-              </div>
+              </Field>
+              <p className="text-sm text-on-surface-variant leading-relaxed bg-surface-container p-5 rounded-md">
+                <span className="font-bold text-on-surface">
+                  Drawings and specifications:
+                </span>{" "}
+                no upload needed at this stage — once we reply (within 24
+                hours) you can attach PDF, DWG or BIM files directly to the
+                email thread.
+              </p>
             </div>
           )}
 
-          {/* STEP 3: Technical Specs */}
+          {/* STEP 3 */}
           {currentStep === 3 && (
             <div className="space-y-8">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                    Facility Area (sq.ft)
-                  </label>
+                <Field id="area" label="Facility area (sq.ft) — optional" error={errors.area}>
                   <input
-                    type="number"
-                    placeholder="50,000"
-                    className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body"
+                    id="area"
+                    type="text"
+                    inputMode="numeric"
+                    className="field tnum"
+                    placeholder="e.g. 50,000"
+                    value={fields.area}
+                    onChange={(e) => set("area", e.target.value)}
                   />
-                </div>
-                <div className="space-y-2">
-                  <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                    Hazard Classification
-                  </label>
-                  <select className="w-full bg-surface-container-high border-none p-4 rounded-lg focus:ring-primary text-on-surface font-body">
-                    <option value="">Select classification...</option>
-                    <option>Light Hazard</option>
-                    <option>Ordinary Hazard Group 1</option>
-                    <option>Ordinary Hazard Group 2</option>
-                    <option>Extra Hazard Group 1</option>
-                    <option>Extra Hazard Group 2</option>
+                </Field>
+                <Field id="hazard" label="Hazard classification — optional" error={errors.hazard}>
+                  <select
+                    id="hazard"
+                    className="field"
+                    value={fields.hazard}
+                    onChange={(e) => set("hazard", e.target.value)}
+                  >
+                    <option value="">Select classification…</option>
+                    {hazardOptions.map((h) => (
+                      <option key={h} value={h}>
+                        {h}
+                      </option>
+                    ))}
                   </select>
-                </div>
+                </Field>
               </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Applicable Codes & Standards
-                </label>
-                <div className="flex flex-wrap gap-3 mt-2">
-                  {["NFPA", "NBC (India)", "IS Codes", "OISD", "FM Global"].map(
-                    (code) => (
-                      <label
-                        key={code}
-                        className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-lg cursor-pointer hover:bg-surface-container-highest transition-colors"
-                      >
-                        <input type="checkbox" className="accent-primary" />
-                        <span className="text-sm font-body">{code}</span>
-                      </label>
-                    )
-                  )}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Additional Requirements
-                </label>
-                <textarea
-                  rows={4}
-                  placeholder="Describe any special conditions, existing infrastructure, or specific requirements..."
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body resize-none"
-                />
-              </div>
-            </div>
-          )}
-
-          {/* STEP 4: Budget & Timeline */}
-          {currentStep === 4 && (
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2">
-                  <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                    Estimated Budget Range (INR)
-                  </label>
-                  <select className="w-full bg-surface-container-high border-none p-4 rounded-lg focus:ring-primary text-on-surface font-body">
-                    <option value="">Select range...</option>
-                    <option>Under ₹10 Lakhs</option>
-                    <option>₹10 – ₹50 Lakhs</option>
-                    <option>₹50 Lakhs – ₹2 Crores</option>
-                    <option>₹2 – ₹10 Crores</option>
-                    <option>Above ₹10 Crores</option>
-                  </select>
-                </div>
-                <div className="space-y-2">
-                  <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                    Project Timeline
-                  </label>
-                  <select className="w-full bg-surface-container-high border-none p-4 rounded-lg focus:ring-primary text-on-surface font-body">
-                    <option value="">Select timeline...</option>
-                    <option>Urgent (Less than 1 month)</option>
-                    <option>1 – 3 Months</option>
-                    <option>3 – 6 Months</option>
-                    <option>6 – 12 Months</option>
-                    <option>12+ Months</option>
-                  </select>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Scope of Engagement
-                </label>
-                <div className="flex flex-wrap gap-3 mt-2">
-                  {[
-                    "Pre-Bid Design",
-                    "Detailed Engineering",
-                    "Shop Drawings",
-                    "Procurement Support",
-                    "Commissioning Supervision",
-                    "Fire NOC Support",
-                  ].map((scope) => (
+              <fieldset>
+                <legend className="overline-code text-on-surface-variant mb-3">
+                  Applicable codes &amp; standards — optional
+                </legend>
+                <div className="flex flex-wrap gap-3">
+                  {codeOptions.map((code) => (
                     <label
-                      key={scope}
-                      className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-lg cursor-pointer hover:bg-surface-container-highest transition-colors"
+                      key={code}
+                      className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-md cursor-pointer hover:bg-surface-container-highest transition-colors"
                     >
-                      <input type="checkbox" className="accent-primary" />
-                      <span className="text-sm font-body">{scope}</span>
+                      <input
+                        type="checkbox"
+                        className="accent-primary"
+                        checked={fields.codes.includes(code)}
+                        onChange={() => toggle("codes", code)}
+                      />
+                      <span className="text-sm">{code}</span>
                     </label>
                   ))}
                 </div>
-              </div>
-              <div className="space-y-2">
-                <label className="font-label text-xs font-bold text-outline uppercase tracking-wider">
-                  Additional Notes
-                </label>
+              </fieldset>
+              <Field
+                id="requirements"
+                label="Additional requirements — optional"
+                error={errors.requirements}
+              >
                 <textarea
-                  rows={3}
-                  placeholder="Any other information that would help us prepare an accurate proposal..."
-                  className="w-full bg-surface-container-high border-none border-b-2 border-transparent focus:ring-0 focus:border-primary transition-all p-4 rounded-t-lg font-body resize-none"
+                  id="requirements"
+                  rows={4}
+                  className="field resize-none"
+                  placeholder="Special conditions, existing infrastructure, or specific requirements…"
+                  value={fields.requirements}
+                  onChange={(e) => set("requirements", e.target.value)}
                 />
-              </div>
+              </Field>
             </div>
           )}
 
-          {/* ═══════════════ NAVIGATION CONTROLS ═══════════════ */}
-          <div className="pt-12 flex justify-between items-center border-t border-outline-variant/20 mt-8">
+          {/* STEP 4 */}
+          {currentStep === 4 && (
+            <div className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <Field id="budget" label="Estimated budget range (INR) — optional" error={errors.budget}>
+                  <select
+                    id="budget"
+                    className="field"
+                    value={fields.budget}
+                    onChange={(e) => set("budget", e.target.value)}
+                  >
+                    <option value="">Select range…</option>
+                    {budgetOptions.map((b) => (
+                      <option key={b} value={b}>
+                        {b}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field id="timeline" label="Project timeline — optional" error={errors.timeline}>
+                  <select
+                    id="timeline"
+                    className="field"
+                    value={fields.timeline}
+                    onChange={(e) => set("timeline", e.target.value)}
+                  >
+                    <option value="">Select timeline…</option>
+                    {timelineOptions.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+              <fieldset>
+                <legend className="overline-code text-on-surface-variant mb-3">
+                  Scope of engagement — optional
+                </legend>
+                <div className="flex flex-wrap gap-3">
+                  {scopeOptions.map((scope) => (
+                    <label
+                      key={scope}
+                      className="flex items-center gap-2 px-4 py-2 bg-surface-container-high rounded-md cursor-pointer hover:bg-surface-container-highest transition-colors"
+                    >
+                      <input
+                        type="checkbox"
+                        className="accent-primary"
+                        checked={fields.scope.includes(scope)}
+                        onChange={() => toggle("scope", scope)}
+                      />
+                      <span className="text-sm">{scope}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <Field id="notes" label="Additional notes — optional" error={errors.notes}>
+                <textarea
+                  id="notes"
+                  rows={3}
+                  className="field resize-none"
+                  placeholder="Anything else that would help us prepare an accurate proposal…"
+                  value={fields.notes}
+                  onChange={(e) => set("notes", e.target.value)}
+                />
+              </Field>
+
+              {/* Review */}
+              <div className="bg-surface-container p-6 rounded-md">
+                <h2 className="overline-code text-on-surface-variant mb-4">
+                  Review before sending
+                </h2>
+                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+                  <div>
+                    <dt className="text-on-surface-variant text-xs">Company</dt>
+                    <dd className="text-on-surface font-semibold">{fields.company || "—"}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-on-surface-variant text-xs">Contact</dt>
+                    <dd className="text-on-surface font-semibold">
+                      {fields.contactPerson || "—"} · {fields.email || "—"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-on-surface-variant text-xs">Project</dt>
+                    <dd className="text-on-surface font-semibold">
+                      {fields.projectType || "—"}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-on-surface-variant text-xs">Location</dt>
+                    <dd className="text-on-surface font-semibold">{fields.location || "—"}</dd>
+                  </div>
+                </dl>
+              </div>
+
+              {status === "error" && (
+                <div
+                  className="bg-error-container text-on-error-container rounded-md p-4 text-sm leading-relaxed"
+                  role="alert"
+                >
+                  <p className="font-bold mb-1">The inquiry could not be sent.</p>
+                  <p>
+                    Please try again, or call us directly on{" "}
+                    <a href={site.phoneHref} className="underline font-bold tnum">
+                      {site.phone}
+                    </a>
+                    .
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Navigation */}
+          <div className="pt-12 flex justify-between items-center mt-8">
             <button
               type="button"
               onClick={goBack}
-              className={`text-primary font-bold flex items-center gap-2 hover:translate-x-[-4px] transition-transform ${
+              className={`text-primary font-bold flex items-center gap-2 hover:-translate-x-1 transition-transform ${
                 currentStep === 1 ? "invisible" : ""
               }`}
             >
-              <span className="material-symbols-outlined">arrow_back</span>
+              <Icon name="arrow-left" size={18} strokeWidth={2} />
               Back
             </button>
 
-            {currentStep < 4 ? (
-              <button
-                type="submit"
-                className="bg-gradient-to-r from-primary to-primary-container text-white px-10 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all"
-              >
-                Next Phase
-                <span className="material-symbols-outlined">arrow_forward</span>
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="bg-gradient-to-r from-primary to-primary-container text-white px-10 py-4 rounded-xl font-bold flex items-center gap-2 shadow-lg hover:opacity-90 active:scale-95 transition-all"
-              >
-                Submit Inquiry
-                <span className="material-symbols-outlined">send</span>
-              </button>
-            )}
+            <button
+              type="submit"
+              disabled={status === "submitting"}
+              className="gradient-primary text-on-primary px-10 py-4 rounded-lg font-headline font-bold flex items-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-60 disabled:active:scale-100"
+            >
+              {currentStep < 4
+                ? "Next step"
+                : status === "submitting"
+                  ? "Sending…"
+                  : "Submit inquiry"}
+              {currentStep < 4 && <Icon name="arrow-right" size={18} strokeWidth={2} />}
+            </button>
           </div>
         </form>
       </section>
 
-      {/* ═══════════════ INFO CARDS ═══════════════ */}
-      <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-        {infoCards.map((card) => (
+      {/* Info cards */}
+      <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          {
+            icon: "check-badge",
+            title: "Code-reviewed designs",
+            desc: "Every design is prepared against NBC, IS, NFPA, OISD and FM codes, plus state-wise AHJ requirements.",
+          },
+          {
+            icon: "gauge",
+            title: "Hydraulically proven",
+            desc: "Water-based systems are backed by hydraulic analysis — 200+ analyses delivered in the last five years.",
+          },
+          {
+            icon: "mail",
+            title: "24-hour response",
+            desc: "Inquiries are answered by the engineering team within 24 hours, not a sales queue.",
+          },
+        ].map((card) => (
           <div key={card.title} className="bg-surface-container p-6 rounded-lg">
-            <div className="text-primary-container mb-4">
-              <span
-                className="material-symbols-outlined text-3xl"
-                style={{ fontVariationSettings: "'FILL' 1" }}
-              >
-                {card.icon}
-              </span>
-            </div>
-            <h3 className="font-headline font-bold text-on-surface mb-2">
-              {card.title}
-            </h3>
-            <p className="text-sm text-on-surface-variant">{card.desc}</p>
+            <Icon name={card.icon} size={26} className="text-primary mb-4" />
+            <h2 className="font-headline font-bold text-on-surface mb-2">{card.title}</h2>
+            <p className="text-sm text-on-surface-variant leading-relaxed">{card.desc}</p>
           </div>
         ))}
       </div>

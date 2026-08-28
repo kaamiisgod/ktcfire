@@ -1,125 +1,112 @@
-"use client";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import Icon from "@/components/Icon";
+import { team, disciplines } from "@/lib/content/team";
 
-/* ===============================================================
-   KRISHNATECH — TEAM PAGE
-   =============================================================== */
+export const metadata: Metadata = {
+  title: "Team",
+  description:
+    "The people behind Krishnatech — professionals with experience across design, engineering, procurement, execution, commissioning, sales and marketing.",
+};
 
-const marketingTeam = [
-  {
-    name: "Piyush Jain",
-    role: "Head of Marketing & Sales",
-    education: "MBA in Marketing, IIT Delhi",
-    experience: "Former Marketing Lead at L&T Technology Services and Siemens.",
-    icon: "campaign",
-    image: "", // Add photo path e.g. "/team/piyush.jpg"
-  },
-  {
-    name: "Aarti Sharma",
-    role: "Client Relations Manager",
-    education: "B.Tech & PGDM, NMIMS Mumbai",
-    experience: "Previously managed key accounts at Honeywell Fire Solutions.",
-    icon: "support_agent",
-    image: "", // Add photo path e.g. "/team/aarti.jpg"
-  }
-];
-
-const designTeam = [
-  {
-    name: "Manu Chauhan",
-    role: "Lead Fire Protection Engineer",
-    education: "M.Tech in Safety Engineering, UPES Dehradun",
-    experience: "15+ years experience. Previously Senior Consultant at Jacobs Engineering.",
-    icon: "engineering",
-    image: "", // Add photo path e.g. "/team/manu.jpg"
-  },
-  {
-    name: "Vikram Singh",
-    role: "Hydraulic Analysis Specialist",
-    education: "B.E. Mechanical Engineering, NIT Trichy",
-    experience: "Ex-Design Engineer at Tyco Fire Products.",
-    icon: "water_drop",
-    image: "", // Add photo path e.g. "/team/vikram.jpg"
-  },
-  {
-    name: "Rohan Patel",
-    role: "CAD & BIM Manager",
-    education: "B.Arch, CEPT University",
-    experience: "Led BIM coordination at AECOM for major infrastructure projects.",
-    icon: "architecture",
-    image: "", // Add photo path e.g. "/team/rohan.jpg"
-  }
-];
+function initials(name: string): string {
+  return name
+    .split(/\s+/)
+    .map((part) => part[0] ?? "")
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}
 
 export default function TeamPage() {
   return (
-    <div className="pt-32 pb-24 px-6 md:px-8 max-w-7xl mx-auto">
+    <div className="pt-36 pb-24">
       {/* Header */}
-      <header className="mb-16 text-center">
-        <div className="inline-block px-3 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant rounded-full text-xs font-bold tracking-widest mb-6 uppercase">
-          Our Experts
-        </div>
-        <h1 className="font-headline font-extrabold text-4xl md:text-5xl text-primary tracking-tighter mb-6">
-          Meet the Minds Behind <br />
-          <span className="text-secondary">Krishnatech</span>
+      <header className="px-6 md:px-8 max-w-7xl mx-auto mb-16">
+        <p className="overline-code text-on-surface-variant mb-4">
+          <span className="text-accent-ink">KTC / T-01</span>
+          <span aria-hidden="true"> / </span>People
+        </p>
+        <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-on-surface tracking-tighter mb-6 max-w-3xl">
+          A small firm with a{" "}
+          <span className="text-primary">deep bench.</span>
         </h1>
-        <p className="max-w-2xl mx-auto text-on-surface-variant text-lg leading-relaxed">
-          Our team of dedicated professionals brings vast experience in Design, Engineering, Procurement, Execution, Commissioning, Sales, and Marketing.
+        <p className="max-w-2xl text-on-surface-variant text-lg leading-relaxed">
+          Krishnatech is a team of dedicated professionals with vast
+          experience across design, engineering, procurement, execution,
+          commissioning, sales and marketing.
         </p>
       </header>
 
-      {/* Marketing Team */}
-      <section className="mb-20">
-        <h2 className="font-headline font-extrabold text-3xl text-on-surface tracking-tight mb-8 border-b-2 border-outline-variant pb-4">
-          Marketing & Business Development
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {marketingTeam.map((member) => (
-            <div key={member.name} className="bg-surface-container-low p-8 rounded-xl shadow-ambient flex gap-6 items-start group hover:bg-surface-container transition-colors">
-              <div className="w-16 h-16 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform overflow-hidden">
+      {/* People */}
+      <section className="px-6 md:px-8 max-w-7xl mx-auto mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl">
+          {team.map((member) => (
+            <article
+              key={member.name}
+              className="bg-surface-container-low rounded-lg p-8 flex gap-6 items-start"
+            >
+              <div className="w-20 h-20 rounded-md bg-primary text-on-primary flex items-center justify-center shrink-0 overflow-hidden">
                 {member.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  <Image
+                    src={member.image}
+                    alt={`Portrait of ${member.name}`}
+                    width={160}
+                    height={160}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <span className="material-symbols-outlined text-3xl">{member.icon}</span>
+                  <span
+                    aria-hidden="true"
+                    className="font-headline font-extrabold text-2xl tracking-tight"
+                  >
+                    {initials(member.name)}
+                  </span>
                 )}
               </div>
               <div>
-                <h3 className="font-headline font-bold text-xl text-on-surface mb-1">{member.name}</h3>
-                <p className="text-sm font-bold text-secondary mb-4 uppercase tracking-wider">{member.role}</p>
-                <div className="space-y-2 text-sm text-on-surface-variant">
-                  <p><strong className="text-on-surface">Education:</strong> {member.education}</p>
-                  <p><strong className="text-on-surface">Background:</strong> {member.experience}</p>
-                </div>
+                <h2 className="font-headline font-bold text-xl text-on-surface mb-1">
+                  {member.name}
+                </h2>
+                <p className="overline-code text-accent-ink mb-4">{member.role}</p>
+                <p className="text-sm text-on-surface-variant leading-relaxed">
+                  {member.bio}
+                </p>
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* Design Team */}
-      <section>
-        <h2 className="font-headline font-extrabold text-3xl text-on-surface tracking-tight mb-8 border-b-2 border-outline-variant pb-4">
-          Design & Engineering Team
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {designTeam.map((member) => (
-            <div key={member.name} className="bg-surface-container-low p-8 rounded-xl shadow-ambient flex flex-col items-center text-center group hover:bg-surface-container transition-colors">
-              <div className="w-20 h-20 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mb-6 group-hover:scale-110 transition-transform overflow-hidden">
-                {member.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                ) : (
-                  <span className="material-symbols-outlined text-4xl">{member.icon}</span>
-                )}
+      {/* Disciplines bench */}
+      <section className="bg-surface-container-low py-20">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto">
+          <p className="overline-code text-on-surface-variant mb-4">
+            <span className="text-accent-ink">KTC / T-02</span>
+            <span aria-hidden="true"> / </span>Disciplines
+          </p>
+          <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-12 max-w-xl">
+            Every stage of the project, covered in-house.
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {disciplines.map((d) => (
+              <div key={d.title} className="bg-surface-container-lowest rounded-lg p-8">
+                <Icon name={d.icon} size={28} className="text-primary mb-5" />
+                <h3 className="font-headline font-bold text-on-surface mb-2">{d.title}</h3>
+                <p className="text-sm text-on-surface-variant leading-relaxed">{d.desc}</p>
               </div>
-              <h3 className="font-headline font-bold text-xl text-on-surface mb-1">{member.name}</h3>
-              <p className="text-xs font-bold text-primary mb-4 uppercase tracking-wider">{member.role}</p>
-              <div className="space-y-3 text-sm text-on-surface-variant w-full bg-surface-container-highest p-4 rounded-lg text-left mt-auto">
-                <p><strong className="text-on-surface block mb-1">Education:</strong> {member.education}</p>
-                <p><strong className="text-on-surface block mb-1">Background:</strong> {member.experience}</p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="mt-14">
+            <Link
+              href="/#contact"
+              className="text-primary font-headline font-bold text-sm inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
+            >
+              Talk to the team
+              <Icon name="arrow-right" size={16} strokeWidth={2} />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

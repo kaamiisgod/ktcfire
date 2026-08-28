@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Project Portfolio | Krishnatech Consulting & Engineer Services",
+  title: "Project Portfolio",
   description:
-    "Explore Krishnatech's portfolio of 20+ fire protection engineering projects across pharma, petrochemical, automobile, power, infrastructure, and data centre sectors.",
+    "52 major completed and ongoing fire protection projects across pharma, automobile, distillery, petrochemical, power, metro, infrastructure and data centre sectors — plus 200+ hydraulic analyses.",
 };
 
 export default function PortfolioLayout({
