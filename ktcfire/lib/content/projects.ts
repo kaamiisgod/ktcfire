@@ -407,3 +407,56 @@ export const featuredProjects = [
   projects[25], // MSETCL 765 kV
   projects[19], // ONGC GDU Tripura
 ] as Project[];
+
+/**
+ * Where the work is. Maps a project's free-text `location` to an ISO
+ * 3166-2:IN state code (lower case, matching ./india-map) or to `null` for
+ * overseas and unlocated projects. The last comma-separated segment is the
+ * state in almost every entry; the exceptions are listed explicitly.
+ */
+const STATE_BY_NAME: Record<string, string> = {
+  Bihar: "br",
+  Chandigarh: "ch",
+  Delhi: "dl",
+  Gujarat: "gj",
+  Haryana: "hr",
+  Karnataka: "ka",
+  "Madhya Pradesh": "mp",
+  Maharashtra: "mh",
+  Punjab: "pb",
+  Rajasthan: "rj",
+  "Tamil Nadu": "tn",
+  Tripura: "tr",
+  "Uttar Pradesh": "up",
+  Uttarakhand: "ut",
+};
+
+const STATE_OVERRIDES: Record<string, string> = {
+  "SAS Nagar, Mohali": "pb",
+  "NCR region": "dl",
+  Hubali: "ka", // Hubballi, Karnataka
+};
+
+export function stateCode(location?: string): string | null {
+  if (!location) return null;
+  if (location in STATE_OVERRIDES) return STATE_OVERRIDES[location];
+  const last = location.split(",").pop()!.trim();
+  return STATE_BY_NAME[last] ?? null;
+}
+
+const INTERNATIONAL = new Set(["Nigeria", "Indonesia"]);
+
+/** Project count per state code, for the presence map. */
+export const projectsByState: Record<string, number> = projects.reduce(
+  (acc, p) => {
+    const code = stateCode(p.location);
+    if (code) acc[code] = (acc[code] ?? 0) + 1;
+    return acc;
+  },
+  {} as Record<string, number>,
+);
+
+/** Countries outside India where KTC has delivered a project. */
+export const internationalLocations: string[] = [
+  ...new Set(projects.map((p) => p.location).filter((l): l is string => !!l && INTERNATIONAL.has(l))),
+].sort();

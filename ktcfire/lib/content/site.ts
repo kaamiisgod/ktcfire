@@ -14,6 +14,12 @@ export const site = {
   description:
     "Engineering Service Outsourcing (ESO) company specialising in fire detection, protection, and suppression system design — from pre-bid engineering to IFC drawings.",
   url: "https://ktcfire.vercel.app",
+  /**
+   * When false, every entry point that sends a request (the inquiry page,
+   * the home contact form and the "Start an Inquiry" CTAs) is hidden in the
+   * UI. The code and API route stay in place; flip this to bring them back.
+   */
+  inquiriesOpen: false as boolean,
   phone: "+91 97693 67666",
   phoneHref: "tel:+919769367666",
   email: "solutions@ktcfire.com",
@@ -48,7 +54,7 @@ export const site = {
     },
     {
       label: "GST Registered",
-      value: "[PLACEHOLDER: GSTIN]",
+      value: "09ALYPC3769R1ZV",
     },
   ],
   clientTypes: [

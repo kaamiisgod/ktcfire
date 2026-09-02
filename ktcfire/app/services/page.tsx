@@ -3,6 +3,7 @@ import Link from "next/link";
 import Icon from "@/components/Icon";
 import { systemGroups, engineeringGroups, workflow } from "@/lib/content/services";
 import type { ServiceGroup } from "@/lib/content/services";
+import { site } from "@/lib/content/site";
 
 export const metadata: Metadata = {
   title: "Services",
@@ -104,10 +105,10 @@ export default function ServicesPage() {
               audits and one-off validation work are quoted per project.
             </p>
             <Link
-              href="/inquiry"
+              href={site.inquiriesOpen ? "/inquiry" : "/#contact"}
               className="inline-flex items-center gap-2 bg-secondary text-ink px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all"
             >
-              Start an Inquiry
+              {site.inquiriesOpen ? "Start an Inquiry" : "Get in touch"}
               <Icon name="arrow-right" size={16} strokeWidth={2} />
             </Link>
           </div>

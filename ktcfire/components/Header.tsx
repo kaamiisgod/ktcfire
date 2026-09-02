@@ -5,13 +5,14 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Icon from "@/components/Icon";
+import { site } from "@/lib/content/site";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/portfolio", label: "Portfolio" },
   { href: "/about", label: "About" },
   { href: "/team", label: "Team" },
+  { href: "/services", label: "Services" },
+  { href: "/portfolio", label: "Portfolio" },
   { href: "/#contact", label: "Contact" },
 ];
 
@@ -65,12 +66,14 @@ export default function Header() {
 
         {/* CTA + mobile toggle */}
         <div className="flex items-center gap-3">
-          <Link
-            href="/inquiry"
-            className="hidden sm:inline-block bg-primary text-on-primary px-5 py-2.5 rounded-md font-headline font-bold text-sm hover:bg-primary-container active:scale-[0.98] transition-all"
-          >
-            Start an Inquiry
-          </Link>
+          {site.inquiriesOpen && (
+            <Link
+              href="/inquiry"
+              className="hidden sm:inline-block bg-primary text-on-primary px-5 py-2.5 rounded-md font-headline font-bold text-sm hover:bg-primary-container active:scale-[0.98] transition-all"
+            >
+              Start an Inquiry
+            </Link>
+          )}
           <button
             className="md:hidden flex items-center justify-center w-10 h-10 rounded-md hover:bg-surface-container-high transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
@@ -97,13 +100,15 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
-            <Link
-              href="/inquiry"
-              onClick={() => setMobileOpen(false)}
-              className="sm:hidden mt-2 bg-primary text-on-primary px-5 py-3 rounded-md font-headline font-bold text-sm text-center"
-            >
-              Start an Inquiry
-            </Link>
+            {site.inquiriesOpen && (
+              <Link
+                href="/inquiry"
+                onClick={() => setMobileOpen(false)}
+                className="sm:hidden mt-2 bg-primary text-on-primary px-5 py-3 rounded-md font-headline font-bold text-sm text-center"
+              >
+                Start an Inquiry
+              </Link>
+            )}
           </div>
         </nav>
       )}

@@ -11,7 +11,7 @@ const explore = [
 ];
 
 const engage = [
-  { label: "Start an Inquiry", href: "/inquiry" },
+  ...(site.inquiriesOpen ? [{ label: "Start an Inquiry", href: "/inquiry" }] : []),
   { label: "Contact", href: "/#contact" },
   { label: "Privacy", href: "/privacy" },
 ];

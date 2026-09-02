@@ -4,7 +4,14 @@ import Icon from "@/components/Icon";
 import { SprinklerSchematic, HydraulicCurve } from "@/components/Schematics";
 import { site } from "@/lib/content/site";
 import { serviceIndex, workflow } from "@/lib/content/services";
-import { featuredProjects, projects } from "@/lib/content/projects";
+import IndiaMap from "@/components/IndiaMap";
+import {
+  featuredProjects,
+  internationalLocations,
+  projects,
+  projectsByState,
+} from "@/lib/content/projects";
+import { indiaStates } from "@/lib/content/india-map";
 import { testimonials } from "@/lib/content/testimonials";
 
 function Overline({ code, title }: { code: string; title: string }) {
@@ -16,6 +23,11 @@ function Overline({ code, title }: { code: string; title: string }) {
     </p>
   );
 }
+
+/** States with at least one project, most first — feeds the presence legend. */
+const coveredStates = indiaStates
+  .filter((s) => projectsByState[s.id])
+  .sort((a, b) => projectsByState[b.id] - projectsByState[a.id]);
 
 export default function HomePage() {
   return (
@@ -41,18 +53,25 @@ export default function HomePage() {
                 requirements
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link
-                  href="/inquiry"
-                  className="gradient-primary text-on-primary px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
-                >
-                  Start an Inquiry
-                  <Icon name="arrow-right" size={16} strokeWidth={2} />
-                </Link>
+                {site.inquiriesOpen && (
+                  <Link
+                    href="/inquiry"
+                    className="gradient-primary text-on-primary px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all inline-flex items-center gap-2"
+                  >
+                    Start an Inquiry
+                    <Icon name="arrow-right" size={16} strokeWidth={2} />
+                  </Link>
+                )}
                 <Link
                   href="/portfolio"
-                  className="bg-surface-container-highest text-on-surface px-8 py-3.5 rounded-lg font-headline font-bold text-sm hover:bg-surface-container-high active:scale-[0.98] transition-all"
+                  className={`${
+                    site.inquiriesOpen
+                      ? "bg-surface-container-highest text-on-surface hover:bg-surface-container-high"
+                      : "gradient-primary text-on-primary hover:opacity-90 inline-flex items-center gap-2"
+                  } px-8 py-3.5 rounded-lg font-headline font-bold text-sm active:scale-[0.98] transition-all`}
                 >
                   View the Project Index
+                  {!site.inquiriesOpen && <Icon name="arrow-right" size={16} strokeWidth={2} />}
                 </Link>
               </div>
             </div>
@@ -339,6 +358,55 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── PRESENCE ─────────────────────────────────────────── */}
+      <section className="bg-surface-container-low py-20 md:py-28">
+        <div className="px-6 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-5">
+            <Overline code="KTC" title="Presence" />
+            <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-6">
+              Designed remotely. Built across India.
+            </h2>
+            <p className="text-on-surface-variant leading-relaxed mb-10 max-w-md">
+              Because the work is delivered as drawings and calculations, site
+              distance is never a constraint. Projects in the index span{" "}
+              {coveredStates.length} states and union territories
+              {internationalLocations.length > 0 && (
+                <>
+                  , with overseas work in {internationalLocations.join(" and ")}
+                </>
+              )}
+              .
+            </p>
+            <ul className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
+              {coveredStates.map((s) => (
+                <li key={s.id} className="flex items-baseline justify-between gap-3 border-b border-outline-variant/60 pb-2">
+                  <span className="text-on-surface">{s.name}</span>
+                  <span className="tnum text-on-surface-variant text-xs">
+                    {projectsByState[s.id]}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="lg:col-span-6 lg:col-start-7">
+            <IndiaMap className="w-full max-w-lg mx-auto h-auto" />
+            <p className="text-[11px] text-on-surface-variant text-center mt-4">
+              States shaded by number of projects. Map outline by{" "}
+              <a
+                href="https://github.com/VictorCazanave/svg-maps"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline hover:text-primary"
+              >
+                svg-maps
+              </a>
+              , CC BY 4.0.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── TESTIMONIALS (renders only when real quotes exist) ── */}
       {testimonials.length > 0 && (
         <section className="py-20 md:py-28 bg-surface-container-low">
@@ -368,7 +436,7 @@ export default function HomePage() {
       {/* ── CONTACT ──────────────────────────────────────────── */}
       <section id="contact" className="bg-ink grid-paper-dark py-20 md:py-28 scroll-mt-24">
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
-          <div className="lg:col-span-5 text-on-ink">
+          <div className={`${site.inquiriesOpen ? "lg:col-span-5" : "lg:col-span-8"} text-on-ink`}>
             <p className="overline-code text-secondary mb-4">
               KTC <span aria-hidden="true">/</span> Contact
             </p>
@@ -376,8 +444,9 @@ export default function HomePage() {
               Put us on your next drawing.
             </h2>
             <p className="text-on-ink-variant leading-relaxed mb-10 max-w-md">
-              Send a brief and our engineering team will come back within 24
-              hours — or call and talk it through first.
+              {site.inquiriesOpen
+                ? "Send a brief and our engineering team will come back within 24 hours — or call and talk it through first."
+                : "Call or email a brief and our engineering team will come back within 24 hours."}
             </p>
             <dl className="space-y-6 text-sm">
               <div className="flex items-center gap-4">
@@ -420,9 +489,11 @@ export default function HomePage() {
             </dl>
           </div>
 
-          <div className="lg:col-span-6 lg:col-start-7">
-            <ContactForm />
-          </div>
+          {site.inquiriesOpen && (
+            <div className="lg:col-span-6 lg:col-start-7">
+              <ContactForm />
+            </div>
+          )}
         </div>
       </section>
     </>
