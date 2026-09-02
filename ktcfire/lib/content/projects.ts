@@ -11,6 +11,11 @@ export type Project = {
   scope: string;
   location?: string;
   sector: Sector;
+  /**
+   * Drawing or photo for the project card. Path under /public, e.g.
+   * "/projects/waste-to-energy.png". Omit for no image.
+   */
+  image?: string;
 };
 
 export type Sector =
@@ -104,6 +109,7 @@ export const projects: Project[] = [
     scope: "Pre-bid design support for the loading and unloading gantries.",
     location: "Barauni, Bihar",
     sector: "Petrochemical & Chemical",
+    image: "/projects/iocl-barauni-refinery.png",
   },
   {
     client: "IOCL",
@@ -228,6 +234,7 @@ export const projects: Project[] = [
     client: "NTPC",
     title: "Waste-to-energy plant, Hubali",
     scope: "Consulting and design of the fire protection system for the waste-to-energy plant.",
+    image: "/projects/waste-to-energy.png",
     location: "Hubali",
     sector: "Power",
   },
@@ -235,6 +242,7 @@ export const projects: Project[] = [
     client: "NTPC",
     title: "Waste-to-energy plant, Bhopal",
     scope: "Consulting and design of the fire protection system for the waste-to-energy plant.",
+    image: "/projects/waste-to-energy.png",
     location: "Bhopal, Madhya Pradesh",
     sector: "Power",
   },
@@ -242,6 +250,7 @@ export const projects: Project[] = [
     client: "NTPC",
     title: "Waste-to-energy plant, Greater Noida",
     scope: "Consulting and design of the fire protection system for the waste-to-energy plant.",
+    image: "/projects/waste-to-energy.png",
     location: "Greater Noida, Uttar Pradesh",
     sector: "Power",
   },
@@ -278,13 +287,6 @@ export const projects: Project[] = [
     scope: "Consulting for the fire protection works of the API block.",
     location: "Udaipur, Rajasthan",
     sector: "Pharma",
-  },
-  {
-    client: "IOCL",
-    title: "Transformer HVW spray consultancy",
-    scope: "Consultancy for the fire protection system design for transformers — high-velocity water spray.",
-    location: "Viramgam, Gujarat",
-    sector: "Petrochemical & Chemical",
   },
   {
     client: "IPCA Laboratories",

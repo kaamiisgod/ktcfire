@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Icon from "@/components/Icon";
 import { projects, sectors } from "@/lib/content/projects";
 
@@ -25,7 +26,7 @@ export default function PortfolioPage() {
       {/* Header */}
       <header className="mb-14 max-w-3xl">
         <p className="overline-code text-on-surface-variant mb-4">
-          <span className="text-accent-ink">KTC / P-01</span>
+          <span className="text-accent-ink">KTC</span>
           <span aria-hidden="true"> / </span>Project Index
         </p>
         <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-on-surface tracking-tighter mb-6">
@@ -106,6 +107,28 @@ export default function PortfolioPage() {
               key={`${project.client}-${project.title}`}
               className="flex flex-col bg-surface-container-low rounded-lg p-8"
             >
+              {project.image && (
+                // Cropped as a thumbnail; hover or keyboard focus swaps to
+                // object-contain so the whole sheet is visible in place, with
+                // no reflow. Opens the full-resolution drawing in a new tab.
+                <a
+                  href={project.image}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group relative block mb-6 rounded-md overflow-hidden bg-surface-container-high focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                >
+                  <Image
+                    src={project.image}
+                    alt={`Design drawing for ${project.title}, ${project.client}`}
+                    width={1200}
+                    height={900}
+                    className="w-full h-40 object-cover object-center transition-transform duration-300 group-hover:object-contain group-focus-visible:object-contain"
+                  />
+                  <span className="absolute inset-x-0 bottom-0 px-3 py-2 text-[11px] font-bold text-on-ink bg-ink/70 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    View full drawing
+                  </span>
+                </a>
+              )}
               <div className="flex items-baseline justify-between gap-4 mb-4">
                 <span className="overline-code text-accent-ink">{project.sector}</span>
                 {project.location && (

@@ -1,8 +1,7 @@
 /**
- * Team. Only people documented in the brand material appear here — Manu
- * Chauhan signs the company profile and Piyush Jain is the contact on the
- * ESO presentation. Roles, biographies and photos are not documented
- * anywhere, so those fields are PLACEHOLDER sockets (see HANDOFF.md).
+ * Team. Only people documented in the brand material appear here. Roles and
+ * biographies are supplied by the company; photos are not, so `image` stays
+ * empty and the grid falls back to a monogram tile.
  * Add further real people by copying a block; the grid handles any count.
  */
 
@@ -10,21 +9,21 @@ export type TeamMember = {
   name: string;
   role: string;
   bio: string;
-  /** Path under /public, e.g. "/team/manu-chauhan.jpg" (800×800). Empty = monogram tile. */
+  /** Path under /public, e.g. "/team/mukesh-chauhan.jpg" (800×800). Empty = monogram tile. */
   image: string;
 };
 
 export const team: TeamMember[] = [
   {
     name: "Mukesh Chauhan",
-    role: "[PLACEHOLDER: Mukesh Chauhan's role/title]",
-    bio: "[PLACEHOLDER: 2–3 sentence biography for Mukesh Chauhan — experience, specialisation, notable projects]",
+    role: "Design & Operations Head",
+    bio: "A mechanical engineer by training and a certified PIPENET professional, Mukesh leads engineering design, project execution and operations at Krishnatech. His focus on technical excellence, quality and timely delivery is what keeps the practice turning out solutions that are practical, reliable and efficient on site.",
     image: "",
   },
   {
     name: "Piyush Jain",
-    role: "[PLACEHOLDER: Piyush Jain's role/title]",
-    bio: "[PLACEHOLDER: 2–3 sentence biography for Piyush Jain — experience, specialisation, notable projects]",
+    role: "Business Relations, Sales & Marketing",
+    bio: "Piyush brings a background in mechanical and piping engineering together with an acumen for sales and marketing. He leads business relations, sales and marketing at Krishnatech, driving client engagement, business development and strategic growth on the strength of both technical and commercial understanding.",
     image: "",
   },
 ];

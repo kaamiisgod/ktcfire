@@ -5,6 +5,8 @@
  * awaiting real values; they are listed in HANDOFF.md.
  */
 
+import { projects, sectors } from "./projects";
+
 export const site = {
   name: "Krishnatech",
   legalName: "Krishnatech Consulting & Engineer Services",
@@ -14,27 +16,28 @@ export const site = {
   url: "https://ktcfire.vercel.app",
   phone: "+91 97693 67666",
   phoneHref: "tel:+919769367666",
-  email: "solutionswithktc@gmail.com",
-  salesEmail: "krishnatechconsultancy.sales@gmail.com",
+  email: "solutions@ktcfire.com",
+  designEmail: "design@ktcfire.com",
   linkedin: "https://www.linkedin.com/company/krishnatech/",
   addresses: [
     {
-      label: "Registered Office",
-      lines: ["Krishnatech Consulting Engineer Services", "Ghaziabad, Uttar Pradesh"],
-    },
-    {
-      label: "Mumbai Branch",
+      label: "Office",
       lines: [
-        "B/17, Janardan Apartments",
-        "Natwarya Shankar Ghankar Marg",
-        "Dadar (W), Mumbai — 400028",
+        "Krishnatech Consulting Engineer Services",
+        "Unit No. 242, Tower T3, Golden I",
+        "Techzone-4, Greater Noida West",
+        "Uttar Pradesh — 201318",
       ],
     },
   ],
   codes: ["NBC", "IS", "NFPA", "OISD", "FM"],
   stats: [
     { value: "25+", label: "Years in fire protection", note: "Team experience across design, engineering and commissioning" },
-    { value: "53", label: "Major projects", note: "Completed and ongoing, across 13 industry segments" },
+    {
+      value: `${projects.length}`,
+      label: "Major projects",
+      note: `Completed and ongoing, across ${sectors.length} industry segments`,
+    },
     { value: "200+", label: "Hydraulic analyses", note: "Delivered for clients and consultants in the last 5 years" },
     { value: "5", label: "Code frameworks", note: "NBC · IS · NFPA · OISD · FM, plus state-wise AHJ requirements" },
   ],

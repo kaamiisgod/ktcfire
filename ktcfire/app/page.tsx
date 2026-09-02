@@ -4,7 +4,7 @@ import Icon from "@/components/Icon";
 import { SprinklerSchematic, HydraulicCurve } from "@/components/Schematics";
 import { site } from "@/lib/content/site";
 import { serviceIndex, workflow } from "@/lib/content/services";
-import { featuredProjects } from "@/lib/content/projects";
+import { featuredProjects, projects } from "@/lib/content/projects";
 import { testimonials } from "@/lib/content/testimonials";
 
 function Overline({ code, title }: { code: string; title: string }) {
@@ -25,7 +25,7 @@ export default function HomePage() {
         <div className="pt-36 pb-16 md:pt-44 md:pb-24 px-6 md:px-8 max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-7">
-              <Overline code="KTC / 00" title="Engineering Service Outsourcing" />
+              <Overline code="KTC" title="Engineering Service Outsourcing" />
               <h1 className="font-headline font-extrabold text-4xl md:text-[3.5rem] leading-[1.05] tracking-tighter text-on-surface mb-6 max-w-2xl">
                 Protecting lives and assets starts with{" "}
                 <em className="not-italic text-primary">smart engineering.</em>
@@ -89,7 +89,7 @@ export default function HomePage() {
       <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5">
-            <Overline code="KTC / 01" title="The ESO Model" />
+            <Overline code="KTC" title="The ESO Model" />
             <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-6">
               A design office you don&apos;t have to hire.
             </h2>
@@ -153,7 +153,7 @@ export default function HomePage() {
         <div className="px-6 md:px-8 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
             <div>
-              <Overline code="KTC / 02" title="Services" />
+              <Overline code="KTC" title="Services" />
               <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight">
                 The drawing index.
               </h2>
@@ -200,7 +200,7 @@ export default function HomePage() {
       {/* ── WORKFLOW ─────────────────────────────────────────── */}
       <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
         <div className="max-w-xl mb-14">
-          <Overline code="KTC / 03" title="Workflow" />
+          <Overline code="KTC" title="Workflow" />
           <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-4">
             Four steps from inputs to handover.
           </h2>
@@ -231,7 +231,7 @@ export default function HomePage() {
       <section className="py-20 md:py-28 bg-surface-container-low">
         <div className="px-6 md:px-8 max-w-7xl mx-auto">
           <div className="max-w-xl mb-12">
-            <Overline code="KTC / 04" title="Deliverables" />
+            <Overline code="KTC" title="Deliverables" />
             <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight">
               Engineering you can put a title block on.
             </h2>
@@ -289,7 +289,7 @@ export default function HomePage() {
       <section className="py-20 md:py-28 px-6 md:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
-            <Overline code="KTC / 05" title="Track Record" />
+            <Overline code="KTC" title="Track Record" />
             <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-6">
               Who we work with.
             </h2>
@@ -305,7 +305,7 @@ export default function HomePage() {
               href="/portfolio"
               className="text-primary font-headline font-bold text-sm inline-flex items-center gap-1.5 hover:gap-2.5 transition-all"
             >
-              53 projects in the index
+              {projects.length} projects in the index
               <Icon name="arrow-right" size={16} strokeWidth={2} />
             </Link>
           </div>
@@ -343,7 +343,7 @@ export default function HomePage() {
       {testimonials.length > 0 && (
         <section className="py-20 md:py-28 bg-surface-container-low">
           <div className="px-6 md:px-8 max-w-7xl mx-auto">
-            <Overline code="KTC / 06" title="Testimonials" />
+            <Overline code="KTC" title="Testimonials" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
               {testimonials.map((t) => (
                 <figure key={t.name} className="bg-surface-container-lowest rounded-lg p-8">
@@ -370,7 +370,7 @@ export default function HomePage() {
         <div className="px-6 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-5 text-on-ink">
             <p className="overline-code text-secondary mb-4">
-              KTC / 07 <span aria-hidden="true">/</span> Contact
+              KTC <span aria-hidden="true">/</span> Contact
             </p>
             <h2 className="font-headline font-extrabold text-3xl md:text-4xl mb-4 tracking-tight">
               Put us on your next drawing.

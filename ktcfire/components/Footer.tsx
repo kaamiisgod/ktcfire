@@ -116,8 +116,16 @@ export default function Footer() {
                 {site.email}
               </a>
             </li>
+            <li>
+              <a
+                href={`mailto:${site.designEmail}`}
+                className="hover:text-on-ink transition-colors break-all"
+              >
+                {site.designEmail}
+              </a>
+            </li>
             <li className="leading-relaxed">
-              {site.addresses[1].lines.map((line) => (
+              {site.addresses[0].lines.map((line) => (
                 <span key={line} className="block">
                   {line}
                 </span>

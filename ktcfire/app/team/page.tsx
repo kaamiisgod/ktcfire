@@ -25,7 +25,7 @@ export default function TeamPage() {
       {/* Header */}
       <header className="px-6 md:px-8 max-w-7xl mx-auto mb-16">
         <p className="overline-code text-on-surface-variant mb-4">
-          <span className="text-accent-ink">KTC / T-01</span>
+          <span className="text-accent-ink">KTC</span>
           <span aria-hidden="true"> / </span>People
         </p>
         <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-on-surface tracking-tighter mb-6 max-w-3xl">
@@ -83,7 +83,7 @@ export default function TeamPage() {
       <section className="bg-surface-container-low py-20">
         <div className="px-6 md:px-8 max-w-7xl mx-auto">
           <p className="overline-code text-on-surface-variant mb-4">
-            <span className="text-accent-ink">KTC / T-02</span>
+            <span className="text-accent-ink">KTC</span>
             <span aria-hidden="true"> / </span>Disciplines
           </p>
           <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-12 max-w-xl">

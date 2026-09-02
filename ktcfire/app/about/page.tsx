@@ -56,7 +56,7 @@ export default function AboutPage() {
       {/* Header */}
       <header className="px-6 md:px-8 max-w-7xl mx-auto mb-20">
         <p className="overline-code text-on-surface-variant mb-4">
-          <span className="text-accent-ink">KTC / A-01</span>
+          <span className="text-accent-ink">KTC</span>
           <span aria-hidden="true"> / </span>The Firm
         </p>
         <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-on-surface tracking-tighter mb-6 max-w-3xl">
@@ -129,7 +129,7 @@ export default function AboutPage() {
       <section className="bg-surface-container-low py-20 mb-24">
         <div className="px-6 md:px-8 max-w-7xl mx-auto">
           <p className="overline-code text-on-surface-variant mb-4">
-            <span className="text-accent-ink">KTC / A-02</span>
+            <span className="text-accent-ink">KTC</span>
             <span aria-hidden="true"> / </span>Foundation
           </p>
           <h2 className="font-headline font-extrabold text-3xl md:text-4xl text-on-surface tracking-tight mb-12">
@@ -169,7 +169,7 @@ export default function AboutPage() {
       <section className="px-6 md:px-8 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
         <div className="lg:col-span-6">
           <p className="overline-code text-on-surface-variant mb-4">
-            <span className="text-accent-ink">KTC / A-03</span>
+            <span className="text-accent-ink">KTC</span>
             <span aria-hidden="true"> / </span>Who We Serve
           </p>
           <h2 className="font-headline font-extrabold text-3xl text-on-surface tracking-tight mb-6">

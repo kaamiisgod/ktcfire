@@ -51,7 +51,7 @@ export default function ServicesPage() {
       {/* Header */}
       <header className="px-6 md:px-8 max-w-7xl mx-auto mb-16">
         <p className="overline-code text-on-surface-variant mb-4">
-          <span className="text-accent-ink">KTC / 02</span>
+          <span className="text-accent-ink">KTC</span>
           <span aria-hidden="true"> / </span>Service Catalogue
         </p>
         <h1 className="font-headline font-extrabold text-4xl md:text-6xl text-on-surface tracking-tighter mb-6 max-w-3xl">
