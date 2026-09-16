@@ -23,7 +23,6 @@ export const site = {
   phone: "+91 97693 67666",
   phoneHref: "tel:+919769367666",
   email: "solutions@ktcfire.com",
-  designEmail: "design@ktcfire.com",
   linkedin: "https://www.linkedin.com/company/krishnatech/",
   addresses: [
     {
@@ -50,7 +49,7 @@ export const site = {
   accreditations: [
     {
       label: "MSME Registered",
-      value: "[PLACEHOLDER: Udyam registration number]",
+      value: "UDYAM-UP-29-0101496",
     },
     {
       label: "GST Registered",
